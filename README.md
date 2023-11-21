@@ -36,8 +36,8 @@ Geting Started
 --------
 
 ### Configuring the package [reflectable](https://github.com/google/reflectable.dart)
-First of all, you need to install the [reflectable](https://github.com/google/reflectable.dart) package from [pub.dev](https://pub.dev/packages/reflectable).
-Onces you have it. You have to create the `build.yaml` with this structure:
+Firstly, you need to install the [reflectable](https://github.com/google/reflectable.dart) package from [pub.dev](https://pub.dev/packages/reflectable).
+Once installed, you should create a `build.yaml` file with the following structure:
 
 ```yaml
 targets:
@@ -49,9 +49,9 @@ targets:
         options:
           formatted: true
 ```
-I recomend to have all the entities only in one folder in order to make easy to use [reflectable](https://github.com/google/reflectable.dart). 
+I recommend keeping all the entities in a single folder for ease of use with  [reflectable](https://github.com/google/reflectable.dart). 
 
-Then. You must create the `builder.dart`. It always going to be like this:
+Next, you need to create a `builder.dart` file. It will always look like this:
 
 ```dart
 import 'package:reflectable/reflectable_builder.dart' as builder;
@@ -61,19 +61,19 @@ main(List<String> arguments) async {
 }
 ```
 
-When all this is done. We can continue with the models. 
+Once this is done, we can proceed with the models.
 
 ### Models structure
-You must have a strict structure when creating the models. Taking into account that reflexion is
-using the *metadata* of out objects, we have to be so clean with this. 
+When creating the models, you must adhere to a strict structure. Given that reflection uses the *metadata* of our objects, we need to be very meticulous with this.
 
-The structure: *The name of the entity will be the name of the table*
+The structure is as follows: *(The name of the entity will be the name of the table)*
 ```dart
 import 'dart:convert';
 
 import 'package:sqflite_simple_dao_backend/database/database/Reflectable.dart';
 import 'package:sqflite_simple_dao_backend/database/params/constants.dart';
 
+/* Important to use the sqflite_simple_dao_backend to import the @reflector */
 @reflector
 class Model{
   /* Variables we have in the model */
@@ -142,17 +142,127 @@ class Model{
 }
 ```
 
-## Usage
+The `@reflector` annotation is **NECESARY** to use the package.
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+Once we have done this, we need to finish a couple of settings in `main.dart`.
+
+### Main.dart
+The first thing is to use `WidgetsFlutterBinding.ensureInitialized();` to initialize the communication between the **Dart** layer and the **Flutter** engine. This is especially important for correctly initializing the database.
+
+Next, I strongly recommend creating a class called `Parameters` where we will have all the parameters we want from the database. In my case, it would look something like this:
 
 ```dart
-const like = 'sample';
+import 'package:example/database/entity/Model.dart';
+import 'package:sqflite_simple_dao_backend/database/params/append.dart';
+
+/* Remember to use the sqflite_simple_dao_backend */
+class Parameters {
+
+  Parameters(){
+    _constants();
+    _dbParameters();
+  }
+
+  void _dbParameters(){
+    Append.dbParameters(param: 'name', value: 'Test');
+    Append.dbParameters(param: 'tables', value: [Model]);
+    Append.dbParameters(param: 'version', value: 1);
+    
+    /* This will be used in case you have to modify the database */
+    // Append.dbParameters(param: 'tables', value: Model, update: true);
+  }
+
+  void _constants(){
+    Append.constant(type: 'varchar', key: '60', value: 'VARCHAR(10)');
+    Append.constant(type: 'varchar', key: '60', value: 'VARCHAR(60)', override: true);
+  }
+}
 ```
 
-## Additional information
+After all this, we only have one thing left to do to get everything working. *Initialize reflection*.
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+To initialize reflection, we must import the [reflectable](https://github.com/google/reflectable.dart) package and a class that will be created, as well as having the method called beforehand. At first, some errors will appear but they will disappear quickly.
+
+#### Imports: *(Puedes copiar y pegar)*
+```dart
+import 'package:reflectable/reflectable.dart';
+import 'main.reflectable.dart';
+```
+
+#### Method: *(Debes copiar y pegar)*
+```dart
+initializeReflectable();
+```
+Both the `Parameters` class, `initializeReflectable`, and `WidgetsFlutterBinding.ensureInitialized()` must be initialized in the `main` like this:
+
+```dart
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  Parameters();
+  initializeReflectable();
+  runApp(const MyApp());
+}
+```
+
+Once we have this, we are ready to get everything up and running.
+
+We go to the console and write the following command:
+```bash
+dart lib/builder.dart lib/main.dart
+```
+
+Now it will create a file called `main.reflectable.dart`. We enter and we have to check that all the lines of code have been correctly created for the classes we have with the `@reflector`.
+
+It would look something like this: **(This is only a part of the code, there may be much more)**
+```dart
+import 'dart:core';
+import 'package:example/database/entity/Model.dart' as prefix1;
+import 'package:sqflite_simple_dao_backend/database/database/Reflectable.dart'
+as prefix0;
+
+// ignore_for_file: camel_case_types
+// ignore_for_file: implementation_imports
+// ignore_for_file: prefer_adjacent_string_concatenation
+// ignore_for_file: prefer_collection_literals
+// ignore_for_file: unnecessary_const
+
+// ignore:unused_import
+import 'package:reflectable/mirrors.dart' as m;
+// ignore:unused_import
+import 'package:reflectable/src/reflectable_builder_based.dart' as r;
+// ignore:unused_import
+import 'package:reflectable/reflectable.dart' as r show Reflectable;
+
+final _data = <r.Reflectable, r.ReflectorData>{
+const prefix0.MyReflectable(): r.ReflectorData(
+<m.TypeMirror>[
+r.NonGenericClassMirrorImpl(
+r'Model',
+r'.Model',
+134217735,
+0,
+const prefix0.MyReflectable(),
+const <int>[0, 1, 2, 3, 4, 13, 14, 15, 16, 17, 18, 19, 20, 21],
+const <int>[22, 23, 24, 25, 26, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+const <int>[13, 14, 15, 16, 17],
+-1,
+```
+
+If this code does not appear, you should check for errors in the installation. If there are no errors and it still does not appear, run the command again. If you continue to have problems, you can contact me at <nunezcotanoruben@gmail.com>
+
+### Remember (Important)
+This Dart command needs to be executed.
+```bash
+dart lib/builder.dart lib/main.dart
+```
+
+## Usage
+
+Main example of using this package.
+
+```dart
+void insertNewReg() async {
+  Dao dao = Dao();
+  await dao.insert(Model.all(nr: 1, date: '2020-12-01', name: 'test', price: 15.25)); 
+}
+```

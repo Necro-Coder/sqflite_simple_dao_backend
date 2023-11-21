@@ -37,7 +37,7 @@ final _data = <r.Reflectable, r.ReflectorData>{
               r'fields': () => prefix1.Model.fields,
               r'names': () => prefix1.Model.names,
               r'primary': () => prefix1.Model.primary,
-              r'excepcion': () => prefix1.Model.excepcion
+              r'exception': () => prefix1.Model.exception
             },
             {},
             {
@@ -84,7 +84,7 @@ final _data = <r.Reflectable, r.ReflectorData>{
             const <int>[], const prefix0.MyReflectable(), null),
         r.MethodMirrorImpl(r'primary', 35651603, 0, -1, -1, -1, null,
             const <int>[], const prefix0.MyReflectable(), null),
-        r.MethodMirrorImpl(r'excepcion', 35651603, 0, -1, -1, -1, null,
+        r.MethodMirrorImpl(r'exception', 35651603, 0, -1, -1, -1, null,
             const <int>[], const prefix0.MyReflectable(), null),
         r.MethodMirrorImpl(r'', 0, 0, -1, -1, -1, null, const <int>[],
             const prefix0.MyReflectable(), null),

@@ -42,7 +42,7 @@ class Model{
   static final Iterable<String> _names = _fields.keys;
 
   static final List<String> _primary = [_names.elementAt(0)];
-  static final List<String> _excepcion = [_names.elementAt(3)];
+  static final List<String> _exception = [_names.elementAt(3)];
 
   static final List<String> _foreign = [];
 
@@ -54,5 +54,5 @@ class Model{
 
   static List<String> get primary => _primary;
 
-  static List<String> get excepcion => _excepcion;
+  static List<String> get exception => _exception;
 }
