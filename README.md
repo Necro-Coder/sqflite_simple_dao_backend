@@ -13,10 +13,27 @@ and the Flutter guide for
 
 This package is designed to simplify database interactions using [reflectable](https://github.com/google/reflectable.dart) and [sqflite](https://github.com/tekartik/sqflite/tree/master/sqflite). It aims to facilitate the creation of Data Access Objects (DAOs) in your Flutter application.
 
+Index
+-------------
+- [Index](#index)
+- [Prerequisites](#prerequisites)
+- [Features](#features)
+- [Getting Started](#getting_started)
+
+    -   [Configuring the package reflectable](#configuring-the-package-reflectable)
+    -   [Models structure](#models-structure)
+    -   [Main.dart](#maindart)
+    -   [Imports](#imports--you-can-copy-and-paste)
+    -   [Method](#method--you-should-copy-and-paste)
+    -   [Remember](#remember--important-)
+
+-   [Usage](#usage)
+
+
 Prerequisites
 -------------
 
-To use this package, you must have the [reflectable](https://github.com/google/reflectable.dart) dependency installed in your project. Please refer to the [Geting Started](#geting-started) section for more details on how to set up and use this package.
+To use this package, you must have the [reflectable](https://github.com/google/reflectable.dart) dependency installed in your project. Please refer to the [Getting Started](#getting-started) section for more details on how to set up and use this package.
 
 Features
 --------
@@ -32,7 +49,7 @@ This package can automatically create a database based on the models you define.
 
 -   Constants: You can add, modify, or change constants to help create a model structure that sqflite recognizes. This feature is crucial for customizing the package to meet your specific needs.
 
-Geting Started
+Getting Started
 --------
 
 ### Configuring the package [reflectable](https://github.com/google/reflectable.dart)
