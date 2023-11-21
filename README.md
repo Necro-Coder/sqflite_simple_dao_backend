@@ -11,12 +11,34 @@ and the Flutter guide for
 [developing packages and plugins](https://flutter.dev/developing-packages).
 -->
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+This package is created looking to simplify the traits with database using 
+[reflectable](https://github.com/google/reflectable.dart) and [sqflite](https://github.com/tekartik/sqflite/tree/master/sqflite). 
+This will helps you to make easier the dao creation in your flutter application. 
+
+## Important
+In order to use this package, you must have installed the [reflectable](https://github.com/google/reflectable.dart)
+dependencies on your proyect. 
+
+As well you have to do some things that are explained on getting started, so read carefully to understand
+the behavior of this package. 
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+This package have the capacity to create database just with the name of the models you create. As the package 
+creates de database, you have implemented the following features:
+    - Dao: 
+        - Insert: In this method, you just have to pass the object you want to insert on the database. 
+        - Update: In this method, you just have to pass the object you want to update and the logic behind
+        this method will compare the object in the database and update just the fields that change in order to 
+        optimize the database access. 
+        - Delete: In this method, you just have to pass the object you want to delete, as well you can specify 
+        if you want to delete all the table just setting all = true.
+
+    - Parameters: You will be able to change the database name, version (looking for updates in the database) and the 
+    tables you want to create. 
+
+    - Constants: You can change, modify and add constants that helps you to create the model structure that sqflite 
+    recognize. This is an important feature to make the package able to cover all your needs. 
 
 ## Getting started
 

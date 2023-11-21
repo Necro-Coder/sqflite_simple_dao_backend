@@ -1,3 +1,4 @@
+import 'package:ansicolor/ansicolor.dart';
 import 'package:meta/meta.dart';
 import 'package:sqflite_simple_dao_backend/database/params/db_parameters.dart';
 import 'package:sqflite_simple_dao_backend/database/utilities/print_handle.dart';
@@ -25,6 +26,7 @@ class Append {
       @required required String value,
       bool override = false,
       String type = ''}) {
+    ansiColorDisabled = false;
     switch (type.toLowerCase()) {
       case ('varchar'):
         _change(Constants.varchar, 'varchar', key, value, override);
@@ -56,6 +58,7 @@ class Append {
   /// If the [param] argument is 'version' and the [value] argument is an integer, the database version will be updated.
   static void dbParameters(
       {@required required String param, @required required dynamic value, update = false}) {
+    ansiColorDisabled = false;
     switch (param.toLowerCase()) {
       case 'name':
         if ('${value.runtimeType}'.toLowerCase().contains('string')) {

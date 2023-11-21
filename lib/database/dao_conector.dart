@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:ansicolor/ansicolor.dart';
+
 import 'database/dao.dart';
 
 class Dao{
@@ -13,6 +15,7 @@ class Dao{
   /// Then, it inserts [newReg] into the table corresponding to its runtime type, converting [newReg] to JSON format for insertion.
   /// The method returns the result of the insertion operation as an integer.
   Future<int> insert(dynamic newReg) async {
+    ansiColorDisabled = false;
     return await dao.newReg(newReg);
   }
 
@@ -26,6 +29,7 @@ class Dao{
   ///
   /// Returns a Future that completes with the number of updated records.
   Future<int> update(dynamic newReg) async {
+    ansiColorDisabled = false;
     return await dao.updateReg(newReg);
   }
 
@@ -45,6 +49,7 @@ class Dao{
   Future<int> delete(dynamic obj,
       {bool all = true,
         Map<String, String> whereArgs = const {'': ''}}) async{
+    ansiColorDisabled = false;
     return await dao.delete(obj, whereArgs: whereArgs, all: all);
   }
 
@@ -63,6 +68,7 @@ class Dao{
       {List<String>? primaryKeys,
         Map<String, String>? whereArgs,
         List<String>? fields}) async {
+    ansiColorDisabled = false;
     return await dao.getReg(obj, whereArgs: whereArgs, primaryKeys: primaryKeys, fields: fields);
   }
 }

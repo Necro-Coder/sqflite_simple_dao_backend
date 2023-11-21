@@ -7,8 +7,6 @@ import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_simple_dao_backend/database/database/Reflectable.dart';
 import 'package:sqflite_simple_dao_backend/database/params/db_parameters.dart';
 
-// import 'Reflectable.dart';
-
 class DBProvider {
   static Database? _database;
   static final DBProvider db = DBProvider._();
@@ -23,31 +21,24 @@ class DBProvider {
     return _database;
   }
 
+  /// This method is used to initialize the database.
+  /// It first gets the application documents directory and then constructs the path of the database file.
+  /// It then opens the database and creates the tables if they do not exist.
+  /// It also handles the database upgrade process.
   Future<Database?> initDB() async {
-    // Path de donde almacenaremos la base de datos.
     Directory documentDirectory = await getApplicationDocumentsDirectory();
 
     final path = join(documentDirectory.path, '${DbParameters.dbName}.db');
 
-    // Crear la base de datos
     return await openDatabase(
       path,
       version: DbParameters.dbVersion,
       onOpen: (db) {},
       onCreate: (db, version) async {
-        /*
-        * Creamos las tablas mediante reflexión.
-        */
+        // For each table in DbParameters.tables, it creates the table if it does not exist.
         for (var x in DbParameters.tables) {
-          /*
-          * Esta variable nos permite recoger cada una de las clases de
-          * la tabla "tablas" para poder usar las variables que contiene.
-          */
           var classMirror = reflector.reflectType(x) as ClassMirror;
 
-          /*
-          * Creamos las listas que vamos a usar para crear las tablas.
-          */
           Iterable<String> nombres =
           classMirror.invokeGetter("names") as Iterable<String>;
           Map<String, String> campos =
@@ -57,31 +48,17 @@ class DBProvider {
           List<String> foreign =
           classMirror.invokeGetter("foreign") as List<String>;
 
-          //Sentencia SQL
           String sql = '''CREATE TABLE IF NOT EXISTS $x (''';
 
-          /*
-          * Vamos a recorrer el iterable nombres para sacar cada uno de los
-          * campos y con la tabla campos vamos a obtener el tipo de dato.
-          * De esta forma creamos la sentencia casi completa.
-          */
           for (var nombre in nombres) {
             sql = '$sql$nombre ${campos[nombre]}, ';
           }
 
-          /*
-          * Aquí añadimos el PRIMARY KEY recorriendo la tabla de la clase
-          */
           sql = '$sql PRIMARY KEY(';
           for (var primaryKey in primary) {
             if (primaryKey != primary.last) {
               sql = '$sql$primaryKey,';
             } else {
-              /*
-              * En esta parte del código estamos comprobando si la tabla
-              * tiene foreign keys, creando las sentencias que ya tenemos
-              * en la lista de foreign de las clases.
-              */
               if (foreign.isNotEmpty) {
                 sql = '$sql$primaryKey),';
                 for (var foreignKey in foreign) {
@@ -98,19 +75,13 @@ class DBProvider {
           }
 
           sql = '$sql);';
-          /* Ejecutamos la sentencia que hemos creado */
           await db.execute(sql);
         }
       },
       onUpgrade: (db, oldVersion, newVersion) async {
         switch (oldVersion) {
           default:
-          /*
-            * Con este valor por defecto, siempre que haya una versión
-            * nueva vamos a crear las tablas nuevas de la base de datos
-            * ya que solo va a crear las tablas que no existan anteriormente
-            * en esta.
-            */
+          // For each table in DbParameters.tables, it creates the table if it does not exist.
             for (var x in DbParameters.tables) {
               var classMirror = reflector.reflectType(x) as ClassMirror;
               Iterable<String> nombres =
