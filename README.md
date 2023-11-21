@@ -11,35 +11,26 @@ and the Flutter guide for
 [developing packages and plugins](https://flutter.dev/developing-packages).
 -->
 
-This package is created looking to simplify the traits with database using 
-[reflectable](https://github.com/google/reflectable.dart) and [sqflite](https://github.com/tekartik/sqflite/tree/master/sqflite). 
-This will helps you to make easier the dao creation in your flutter application. 
+This package is designed to simplify database interactions using reflectable and sqflite. It aims to facilitate the creation of Data Access Objects (DAOs) in your Flutter application.
 
-## Important
-In order to use this package, you must have installed the [reflectable](https://github.com/google/reflectable.dart)
-dependencies on your proyect. 
+Prerequisites
+-------------
 
-As well you have to do some things that are explained on getting started, so read carefully to understand
-the behavior of this package. 
+To use this package, you must have the reflectable dependency installed in your project. Please refer to the 'Getting Started' section for more details on how to set up and use this package.
 
-## Features
+Features
+--------
 
-This package have the capacity to create database just with the name of the models you create. As the package 
-creates de database, you have implemented the following features:
-    - Dao: 
-        - Insert: In this method, you just have to pass the object you want to insert on the database. 
-        - Update: In this method, you just have to pass the object you want to update and the logic behind
-        this method will compare the object in the database and update just the fields that change in order to 
-        optimize the database access. 
-        - Delete: In this method, you just have to pass the object you want to delete, as well you can specify 
-        if you want to delete all the table just setting all = true.
+This package can automatically create a database based on the models you define. Once the database is created, the following features are available:
 
-    - Parameters: You will be able to change the database name, version (looking for updates in the database) and the 
-    tables you want to create. 
+-   DAO Operations:
 
-    - Constants: You can change, modify and add constants that helps you to create the model structure that sqflite 
-    recognize. This is an important feature to make the package able to cover all your needs. 
+    -   **Insert:** Simply pass the object you wish to insert into the database.
+    -   **Update:** Pass the object you wish to update. The logic behind this method will compare the object in the database and only update the fields that have changed, optimizing database access.
+    -   **Delete:** Pass the object you wish to delete. You can also specify if you want to delete all the records in a table by setting `all = true`.
+-   Parameters: You can modify the database name, version (for database updates), and the tables you wish to create.
 
+-   Constants: You can add, modify, or change constants to help create a model structure that sqflite recognizes. This feature is crucial for customizing the package to meet your specific needs.
 ## Getting started
 
 TODO: List prerequisites and provide or point to information on how to
