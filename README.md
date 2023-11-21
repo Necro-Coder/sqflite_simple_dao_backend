@@ -16,7 +16,7 @@ This package is designed to simplify database interactions using [reflectable](h
 Prerequisites
 -------------
 
-To use this package, you must have the [reflectable](https://github.com/google/reflectable.dart) dependency installed in your project. Please refer to the [Getting Started](#getting-started) section for more details on how to set up and use this package.
+To use this package, you must have the [reflectable](https://github.com/google/reflectable.dart) dependency installed in your project. Please refer to the [Geting Started](#geting-started) section for more details on how to set up and use this package.
 
 Features
 --------
