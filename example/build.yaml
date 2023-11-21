@@ -1,0 +1,8 @@
+targets:
+  $default:
+    builders:
+      reflectable:
+        generate_for:
+          - lib/database/entity/**.dart
+        options:
+          formatted: true
