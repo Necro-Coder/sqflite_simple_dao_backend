@@ -18,14 +18,14 @@ Index
 - [Index](#index)
 - [Prerequisites](#prerequisites)
 - [Features](#features)
-- [Getting Started](#getting_started)
+- [Getting Started](#getting-started)
 
     -   [Configuring the package reflectable](#configuring-the-package-reflectable)
     -   [Models structure](#models-structure)
     -   [Main.dart](#maindart)
-    -   [Imports](#imports--you-can-copy-and-paste)
-    -   [Method](#method--you-should-copy-and-paste)
-    -   [Remember](#remember--important-)
+    -   [Imports](#imports-you-can-copy-and-paste)
+    -   [Method](#method-you-should-copy-and-paste)
+    -   [Remember](#remember-important-)
 
 -   [Usage](#usage)
 
