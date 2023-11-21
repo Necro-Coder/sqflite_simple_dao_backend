@@ -11,12 +11,12 @@ and the Flutter guide for
 [developing packages and plugins](https://flutter.dev/developing-packages).
 -->
 
-This package is designed to simplify database interactions using reflectable and sqflite. It aims to facilitate the creation of Data Access Objects (DAOs) in your Flutter application.
+This package is designed to simplify database interactions using [reflectable](https://github.com/google/reflectable.dart) and [sqflite](https://github.com/tekartik/sqflite/tree/master/sqflite). . It aims to facilitate the creation of Data Access Objects (DAOs) in your Flutter application.
 
 Prerequisites
 -------------
 
-To use this package, you must have the reflectable dependency installed in your project. Please refer to the 'Getting Started' section for more details on how to set up and use this package.
+To use this package, you must have the [reflectable](https://github.com/google/reflectable.dart) dependency installed in your project. Please refer to the [Getting Started](#gettingstarted) section for more details on how to set up and use this package.
 
 Features
 --------
@@ -31,7 +31,9 @@ This package can automatically create a database based on the models you define.
 -   Parameters: You can modify the database name, version (for database updates), and the tables you wish to create.
 
 -   Constants: You can add, modify, or change constants to help create a model structure that sqflite recognizes. This feature is crucial for customizing the package to meet your specific needs.
-## Getting started
+
+Geting Started
+--------
 
 TODO: List prerequisites and provide or point to information on how to
 start using the package.
