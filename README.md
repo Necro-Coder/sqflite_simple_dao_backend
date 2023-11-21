@@ -11,12 +11,12 @@ and the Flutter guide for
 [developing packages and plugins](https://flutter.dev/developing-packages).
 -->
 
-This package is designed to simplify database interactions using [reflectable](https://github.com/google/reflectable.dart) and [sqflite](https://github.com/tekartik/sqflite/tree/master/sqflite). . It aims to facilitate the creation of Data Access Objects (DAOs) in your Flutter application.
+This package is designed to simplify database interactions using [reflectable](https://github.com/google/reflectable.dart) and [sqflite](https://github.com/tekartik/sqflite/tree/master/sqflite). It aims to facilitate the creation of Data Access Objects (DAOs) in your Flutter application.
 
 Prerequisites
 -------------
 
-To use this package, you must have the [reflectable](https://github.com/google/reflectable.dart) dependency installed in your project. Please refer to the [Getting Started](#gettingstarted) section for more details on how to set up and use this package.
+To use this package, you must have the [reflectable](https://github.com/google/reflectable.dart) dependency installed in your project. Please refer to the [Getting Started](#getting-started) section for more details on how to set up and use this package.
 
 Features
 --------
@@ -183,13 +183,13 @@ After all this, we only have one thing left to do to get everything working. *In
 
 To initialize reflection, we must import the [reflectable](https://github.com/google/reflectable.dart) package and a class that will be created, as well as having the method called beforehand. At first, some errors will appear but they will disappear quickly.
 
-#### Imports: *(Puedes copiar y pegar)*
+#### Imports: *(You can copy and paste)*
 ```dart
 import 'package:reflectable/reflectable.dart';
 import 'main.reflectable.dart';
 ```
 
-#### Method: *(Debes copiar y pegar)*
+#### Method: *(You should copy and paste)*
 ```dart
 initializeReflectable();
 ```
@@ -251,7 +251,7 @@ const <int>[13, 14, 15, 16, 17],
 If this code does not appear, you should check for errors in the installation. If there are no errors and it still does not appear, run the command again. If you continue to have problems, you can contact me at <nunezcotanoruben@gmail.com>
 
 ### Remember (Important)
-This Dart command needs to be executed in case you modify anything about the reflectable package.
+This Dart command needs to be executed in case you modify anything about the [reflectable](https://github.com/google/reflectable.dart) package.
 ```bash
 dart lib/builder.dart lib/main.dart
 ```
