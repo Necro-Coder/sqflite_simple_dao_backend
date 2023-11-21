@@ -1,12 +1,14 @@
-import 'package:ansicolor/ansicolor.dart';
+import 'package:logger/logger.dart';
+import 'package:sqflite_simple_dao_backend/database/utilities/MyFilter.dart';
 
 class PrintHandler {
-  static AnsiPen greenBold = AnsiPen()..green(bold: true);
-  static AnsiPen redBold = AnsiPen()..red(bold: true);
-  static AnsiPen blueBold = AnsiPen()..blue(bold: true);
-  static AnsiPen yellowBold = AnsiPen()..yellow(bold: true);
-  static AnsiPen green = AnsiPen()..green();
-  static AnsiPen red= AnsiPen()..red();
-  static AnsiPen blue = AnsiPen()..blue();
-  static AnsiPen yellow = AnsiPen()..yellow();
+  static final Logger warninLogger = Logger(
+    filter: MyFilter(),
+  );
+  static final Logger infoLogger =
+      Logger(filter: MyFilter(), level: Level.info, printer: PrettyPrinter());
+  static final Logger successLogger =
+      Logger(filter: MyFilter(), level: Level.all, printer: PrettyPrinter());
+  static final Logger errorLogger =
+      Logger(filter: MyFilter(), level: Level.error, printer: PrettyPrinter());
 }

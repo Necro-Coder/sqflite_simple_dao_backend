@@ -4,8 +4,9 @@ import 'package:ansicolor/ansicolor.dart';
 
 import 'database/dao.dart';
 
-class Dao{
+class Dao {
   final GenericDao dao = GenericDao();
+
   Dao();
 
   /// This function takes a record [newReg] and inserts it into the corresponding table.
@@ -16,7 +17,11 @@ class Dao{
   /// The method returns the result of the insertion operation as an integer.
   Future<int> insert(dynamic newReg) async {
     ansiColorDisabled = false;
-    return await dao.newReg(newReg);
+    var old = await query(newReg);
+    if (old.isEmpty) {
+      return await dao.newReg(newReg);
+    }
+    return -1;
   }
 
   /// This function updates a record in the database with the changes specified in [newReg].
@@ -47,8 +52,7 @@ class Dao{
   ///
   /// Returns a Future that completes with the number of deleted records.
   Future<int> delete(dynamic obj,
-      {bool all = true,
-        Map<String, String> whereArgs = const {'': ''}}) async{
+      {bool all = true, Map<String, String> whereArgs = const {'': ''}}) async {
     ansiColorDisabled = false;
     return await dao.delete(obj, whereArgs: whereArgs, all: all);
   }
@@ -66,9 +70,10 @@ class Dao{
   /// Note: If the field is a boolean, it should be represented as 0 or 1, otherwise the program will fail.
   Future<List<dynamic>> query(dynamic obj,
       {List<String>? primaryKeys,
-        Map<String, String>? whereArgs,
-        List<String>? fields}) async {
+      Map<String, String>? whereArgs,
+      List<String>? fields}) async {
     ansiColorDisabled = false;
-    return await dao.getReg(obj, whereArgs: whereArgs, primaryKeys: primaryKeys, fields: fields);
+    return await dao.getReg(obj,
+        whereArgs: whereArgs, primaryKeys: primaryKeys, fields: fields);
   }
 }

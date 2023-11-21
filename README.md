@@ -47,7 +47,10 @@ This package can automatically create a database based on the models you define.
     -   **Delete:** Pass the object you wish to delete. You can also specify if you want to delete all the records in a table by setting `all = true`.
 -   Parameters: You can modify the database name, version (for database updates), and the tables you wish to create.
 
--   Constants: You can add, modify, or change constants to help create a model structure that sqflite recognizes. This feature is crucial for customizing the package to meet your specific needs.
+- Constants:You can add, modify, or change constants to help create a model structure that sqflite
+  recognizes. This feature is crucial for customizing the package to meet your specific needs.
+- The package also print logs in the console in order to display the changes on the database. You
+  can turn it off with the `Append` class.
 
 Getting Started
 --------

@@ -1,8 +1,9 @@
 import 'package:ansicolor/ansicolor.dart';
 import 'package:meta/meta.dart';
-import 'package:sqflite_simple_dao_backend/database/params/db_parameters.dart';
-import 'package:sqflite_simple_dao_backend/database/utilities/print_handle.dart';
 import 'package:sqflite_simple_dao_backend/database/params/constants.dart';
+import 'package:sqflite_simple_dao_backend/database/params/db_parameters.dart';
+import 'package:sqflite_simple_dao_backend/database/params/log_params.dart';
+import 'package:sqflite_simple_dao_backend/database/utilities/print_handle.dart';
 
 /// These methods ensure the safe usage of maps in the Constants class.
 /// For reliable operation, it's crucial to use these methods when implementing
@@ -57,45 +58,55 @@ class Append {
   ///
   /// If the [param] argument is 'version' and the [value] argument is an integer, the database version will be updated.
   static void dbParameters(
-      {@required required String param, @required required dynamic value, update = false}) {
+      {@required required String param,
+      @required required dynamic value,
+      update = false}) {
     ansiColorDisabled = false;
     switch (param.toLowerCase()) {
       case 'name':
         if ('${value.runtimeType}'.toLowerCase().contains('string')) {
           DbParameters.dbName = value;
-          print(PrintHandler.greenBold(
-              'sqflite_simple_dao_backend: The value for the database name is now $value. 💫'));
+          PrintHandler.warninLogger.i(
+              'sqflite_simple_dao_backend: The value for the database name is now $value. 💫');
         } else {
-          print(PrintHandler.redBold(
-              'sqflite_simple_dao_backend: Unfortunately, the value is ${value.runtimeType} and it should be String, skiping... 😭'));
+          PrintHandler.warninLogger.e(
+              'sqflite_simple_dao_backend: Unfortunately, the value is ${value.runtimeType} and it should be String, skiping... 😭');
         }
         break;
       case 'tables':
         if ('${value.runtimeType}'.toLowerCase().contains('list')) {
           DbParameters.tables = value;
-          print(PrintHandler.greenBold(
-              'sqflite_simple_dao_backend: The value for the tables list just updated with ${DbParameters.tables.length} elements.✨'));
+          PrintHandler.warninLogger.i(
+              'sqflite_simple_dao_backend: The value for the tables list just updated with ${DbParameters.tables.length} elements.✨');
         } else if ('${value.runtimeType}'.toLowerCase().contains('type') &&
             update) {
           DbParameters.tables.add(value);
-          print(PrintHandler.greenBold(
-              'sqflite_simple_dao_backend: You already insert ${value.toString()} to the tables list.😋'));
+          PrintHandler.warninLogger.i(
+              'sqflite_simple_dao_backend: You already insert ${value.toString()} to the tables list.😋');
         } else {
-          print(PrintHandler.redBold(
-              'sqflite_simple_dao_backend: Unfortunately, the value is ${value.runtimeType} and it should be List<Type>, skiping... 😭'));
-          print(PrintHandler.yellowBold(
-              'sqflite_simple_dao_backend: In case you want to update the list, just set update = true. 😉'));
+          PrintHandler.warninLogger.e(
+              'sqflite_simple_dao_backend: Unfortunately, the value is ${value.runtimeType} and it should be List<Type>, skiping... 😭');
+          PrintHandler.warninLogger.w(
+              'sqflite_simple_dao_backend: In case you want to update the list, just set update = true. 😉');
         }
       case 'version':
         if ('${value.runtimeType}'.toLowerCase().contains('int')) {
           DbParameters.dbVersion = value;
-          print(PrintHandler.greenBold(
-              'sqflite_simple_dao_backend: The value for the database version is now $value. 💫'));
+          PrintHandler.warninLogger.i(
+              'sqflite_simple_dao_backend: The value for the database version is now $value. 💫');
         } else {
-          print(PrintHandler.redBold(
-              'sqflite_simple_dao_backend: Unfortunately, the value is ${value.runtimeType} and it should be int, skiping... 😭'));
+          PrintHandler.warninLogger.e(
+              'sqflite_simple_dao_backend: Unfortunately, the value is ${value.runtimeType} and it should be int, skiping... 😭');
         }
     }
+  }
+
+  /// This function sets the value of the shouldLog parameter in the LogParams class.
+  /// If shouldLog is set to true, logging will be enabled. If it is set to false, logging will be disabled.
+  ///
+  /// [shouldLog] A boolean value that determines whether logging should be enabled or disabled.
+  void log(bool shouldLog) {
+    LogParams.shouldLog = shouldLog;
   }
 
   /* endregion */
@@ -106,15 +117,15 @@ class Append {
     Iterable checkList = map.keys;
     if (!checkList.contains(key)) {
       map.addAll({key: value});
-      print(PrintHandler.greenBold(
-          'sqflite_simple_dao_backend: New value {$key: $value} added to $name constant value list 👏'));
+      PrintHandler.warninLogger.i(
+          'sqflite_simple_dao_backend: New value {$key: $value} added to $name constant value list 👏');
     } else if (checkList.contains(key) && map[key] != value && override) {
       map[key] = value;
-      print(PrintHandler.yellowBold(
-          'sqflite_simple_dao_backend: The value {$key: $value} was already in $name constant value list. Updating...💱'));
+      PrintHandler.warninLogger.w(
+          'sqflite_simple_dao_backend: The value {$key: $value} was already in $name constant value list. Updating...💱');
     } else {
-      print(PrintHandler.yellowBold(
-          'sqflite_simple_dao_backend: The value {$key: $value} was already in $name constant value list. Skipping...🪜'));
+      PrintHandler.warninLogger.w(
+          'sqflite_simple_dao_backend: The value {$key: $value} was already in $name constant value list. Skipping...🪜');
     }
   }
 /* endregion */
