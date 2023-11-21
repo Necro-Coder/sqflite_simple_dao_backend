@@ -61,36 +61,36 @@ class Append {
         if ('${value.runtimeType}'.toLowerCase().contains('string')) {
           DbParameters.dbName = value;
           print(PrintHandler.greenBold(
-              'The value for the database name is now $value. 💫'));
+              'sqflite_simple_dao_backend: The value for the database name is now $value. 💫'));
         } else {
           print(PrintHandler.redBold(
-              'Unfortunately, the value is ${value.runtimeType} and it should be String, skiping... 😭'));
+              'sqflite_simple_dao_backend: Unfortunately, the value is ${value.runtimeType} and it should be String, skiping... 😭'));
         }
         break;
       case 'tables':
         if ('${value.runtimeType}'.toLowerCase().contains('list')) {
           DbParameters.tables = value;
           print(PrintHandler.greenBold(
-              'The value for the tables list just updated with ${DbParameters.tables.length} elements.✨'));
+              'sqflite_simple_dao_backend: The value for the tables list just updated with ${DbParameters.tables.length} elements.✨'));
         } else if ('${value.runtimeType}'.toLowerCase().contains('type') &&
             update) {
           DbParameters.tables.add(value);
           print(PrintHandler.greenBold(
-              'You already insert ${value.toString()} to the tables list.😋'));
+              'sqflite_simple_dao_backend: You already insert ${value.toString()} to the tables list.😋'));
         } else {
           print(PrintHandler.redBold(
-              'Unfortunately, the value is ${value.runtimeType} and it should be List<Type>, skiping... 😭'));
+              'sqflite_simple_dao_backend: Unfortunately, the value is ${value.runtimeType} and it should be List<Type>, skiping... 😭'));
           print(PrintHandler.yellowBold(
-              'In case you want to update the list, just set update = true. 😉'));
+              'sqflite_simple_dao_backend: In case you want to update the list, just set update = true. 😉'));
         }
       case 'version':
         if ('${value.runtimeType}'.toLowerCase().contains('int')) {
           DbParameters.dbVersion = value;
           print(PrintHandler.greenBold(
-              'The value for the database version is now $value. 💫'));
+              'sqflite_simple_dao_backend: The value for the database version is now $value. 💫'));
         } else {
           print(PrintHandler.redBold(
-              'Unfortunately, the value is ${value.runtimeType} and it should be int, skiping... 😭'));
+              'sqflite_simple_dao_backend: Unfortunately, the value is ${value.runtimeType} and it should be int, skiping... 😭'));
         }
     }
   }
@@ -104,14 +104,14 @@ class Append {
     if (!checkList.contains(key)) {
       map.addAll({key: value});
       print(PrintHandler.greenBold(
-          'New value {$key: $value} added to $name constant value list 👏'));
+          'sqflite_simple_dao_backend: New value {$key: $value} added to $name constant value list 👏'));
     } else if (checkList.contains(key) && map[key] != value && override) {
       map[key] = value;
       print(PrintHandler.yellowBold(
-          'The value {$key: $value} was already in $name constant value list. Updating...💱'));
+          'sqflite_simple_dao_backend: The value {$key: $value} was already in $name constant value list. Updating...💱'));
     } else {
       print(PrintHandler.yellowBold(
-          'The value {$key: $value} was already in $name constant value list. Skipping...🪜'));
+          'sqflite_simple_dao_backend: The value {$key: $value} was already in $name constant value list. Skipping...🪜'));
     }
   }
 /* endregion */

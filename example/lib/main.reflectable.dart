@@ -2,6 +2,9 @@
 // https://github.com/dart-lang/reflectable.
 
 import 'dart:core';
+import 'package:example/database/entity/Model.dart' as prefix1;
+import 'package:sqflite_simple_dao_backend/database/database/Reflectable.dart'
+    as prefix0;
 
 // ignore_for_file: camel_case_types
 // ignore_for_file: implementation_imports
@@ -16,7 +19,151 @@ import 'package:reflectable/src/reflectable_builder_based.dart' as r;
 // ignore:unused_import
 import 'package:reflectable/reflectable.dart' as r show Reflectable;
 
-final _data = <r.Reflectable, r.ReflectorData>{};
+final _data = <r.Reflectable, r.ReflectorData>{
+  const prefix0.MyReflectable(): r.ReflectorData(
+      <m.TypeMirror>[
+        r.NonGenericClassMirrorImpl(
+            r'Model',
+            r'.Model',
+            134217735,
+            0,
+            const prefix0.MyReflectable(),
+            const <int>[0, 1, 2, 3, 4, 13, 14, 15, 16, 17, 18, 19, 20, 21],
+            const <int>[22, 23, 24, 25, 26, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+            const <int>[13, 14, 15, 16, 17],
+            -1,
+            {
+              r'foreign': () => prefix1.Model.foreign,
+              r'fields': () => prefix1.Model.fields,
+              r'names': () => prefix1.Model.names,
+              r'primary': () => prefix1.Model.primary,
+              r'excepcion': () => prefix1.Model.excepcion
+            },
+            {},
+            {
+              r'': (bool b) => () => b ? prefix1.Model() : null,
+              r'all': (bool b) => ({nr, name, date, price}) => b
+                  ? prefix1.Model.all(
+                      date: date, name: name, nr: nr, price: price)
+                  : null,
+              r'fromRawJson': (bool b) =>
+                  (str) => b ? prefix1.Model.fromRawJson(str) : null,
+              r'fromJson': (bool b) =>
+                  (json) => b ? prefix1.Model.fromJson(json) : null
+            },
+            -1,
+            -1,
+            const <int>[-1],
+            null,
+            null)
+      ],
+      <m.DeclarationMirror>[
+        r.VariableMirrorImpl(r'nr', 67239941, 0, const prefix0.MyReflectable(),
+            -1, -1, -1, null, null),
+        r.VariableMirrorImpl(r'name', 67239941, 0,
+            const prefix0.MyReflectable(), -1, -1, -1, null, null),
+        r.VariableMirrorImpl(r'date', 67239941, 0,
+            const prefix0.MyReflectable(), -1, -1, -1, null, null),
+        r.VariableMirrorImpl(r'price', 67239941, 0,
+            const prefix0.MyReflectable(), -1, -1, -1, null, null),
+        r.MethodMirrorImpl(r'toJson', 35651586, 0, -1, -1, -1, null,
+            const <int>[], const prefix0.MyReflectable(), null),
+        r.ImplicitGetterMirrorImpl(const prefix0.MyReflectable(), 0, 5),
+        r.ImplicitSetterMirrorImpl(const prefix0.MyReflectable(), 0, 6),
+        r.ImplicitGetterMirrorImpl(const prefix0.MyReflectable(), 1, 7),
+        r.ImplicitSetterMirrorImpl(const prefix0.MyReflectable(), 1, 8),
+        r.ImplicitGetterMirrorImpl(const prefix0.MyReflectable(), 2, 9),
+        r.ImplicitSetterMirrorImpl(const prefix0.MyReflectable(), 2, 10),
+        r.ImplicitGetterMirrorImpl(const prefix0.MyReflectable(), 3, 11),
+        r.ImplicitSetterMirrorImpl(const prefix0.MyReflectable(), 3, 12),
+        r.MethodMirrorImpl(r'foreign', 35651603, 0, -1, -1, -1, null,
+            const <int>[], const prefix0.MyReflectable(), null),
+        r.MethodMirrorImpl(r'fields', 35651603, 0, -1, -1, -1, null,
+            const <int>[], const prefix0.MyReflectable(), null),
+        r.MethodMirrorImpl(r'names', 35651603, 0, -1, -1, -1, null,
+            const <int>[], const prefix0.MyReflectable(), null),
+        r.MethodMirrorImpl(r'primary', 35651603, 0, -1, -1, -1, null,
+            const <int>[], const prefix0.MyReflectable(), null),
+        r.MethodMirrorImpl(r'excepcion', 35651603, 0, -1, -1, -1, null,
+            const <int>[], const prefix0.MyReflectable(), null),
+        r.MethodMirrorImpl(r'', 0, 0, -1, -1, -1, null, const <int>[],
+            const prefix0.MyReflectable(), null),
+        r.MethodMirrorImpl(r'all', 0, 0, -1, -1, -1, null,
+            const <int>[0, 1, 2, 3], const prefix0.MyReflectable(), null),
+        r.MethodMirrorImpl(r'fromRawJson', 1, 0, -1, -1, -1, null,
+            const <int>[4], const prefix0.MyReflectable(), null),
+        r.MethodMirrorImpl(r'fromJson', 1, 0, -1, -1, -1, null, const <int>[5],
+            const prefix0.MyReflectable(), null),
+        r.MethodMirrorImpl(r'==', 2097154, -1, -1, -1, -1, null,
+            const <int>[10], const prefix0.MyReflectable(), null),
+        r.MethodMirrorImpl(r'toString', 2097154, -1, -1, -1, -1, null,
+            const <int>[], const prefix0.MyReflectable(), null),
+        r.MethodMirrorImpl(r'noSuchMethod', 524290, -1, -1, -1, -1, null,
+            const <int>[11], const prefix0.MyReflectable(), null),
+        r.MethodMirrorImpl(r'hashCode', 2097155, -1, -1, -1, -1, null,
+            const <int>[], const prefix0.MyReflectable(), null),
+        r.MethodMirrorImpl(r'runtimeType', 2097155, -1, -1, -1, -1, null,
+            const <int>[], const prefix0.MyReflectable(), null)
+      ],
+      <m.ParameterMirror>[
+        r.ParameterMirrorImpl(r'nr', 67253254, 19,
+            const prefix0.MyReflectable(), -1, -1, -1, null, null, null, #nr),
+        r.ParameterMirrorImpl(r'name', 67253254, 19,
+            const prefix0.MyReflectable(), -1, -1, -1, null, null, null, #name),
+        r.ParameterMirrorImpl(r'date', 67253254, 19,
+            const prefix0.MyReflectable(), -1, -1, -1, null, null, null, #date),
+        r.ParameterMirrorImpl(
+            r'price',
+            67253254,
+            19,
+            const prefix0.MyReflectable(),
+            -1,
+            -1,
+            -1,
+            null,
+            null,
+            null,
+            #price),
+        r.ParameterMirrorImpl(r'str', 134348806, 20,
+            const prefix0.MyReflectable(), -1, -1, -1, null, null, null, null),
+        r.ParameterMirrorImpl(r'json', 151126022, 21,
+            const prefix0.MyReflectable(), -1, -1, -1, null, null, null, null),
+        r.ParameterMirrorImpl(r'_nr', 67240038, 6,
+            const prefix0.MyReflectable(), -1, -1, -1, null, null, null, null),
+        r.ParameterMirrorImpl(r'_name', 67240038, 8,
+            const prefix0.MyReflectable(), -1, -1, -1, null, null, null, null),
+        r.ParameterMirrorImpl(r'_date', 67240038, 10,
+            const prefix0.MyReflectable(), -1, -1, -1, null, null, null, null),
+        r.ParameterMirrorImpl(r'_price', 67240038, 12,
+            const prefix0.MyReflectable(), -1, -1, -1, null, null, null, null),
+        r.ParameterMirrorImpl(r'other', 134348806, 22,
+            const prefix0.MyReflectable(), -1, -1, -1, null, null, null, null),
+        r.ParameterMirrorImpl(r'invocation', 134348806, 24,
+            const prefix0.MyReflectable(), -1, -1, -1, null, null, null, null)
+      ],
+      <Type>[prefix1.Model],
+      1,
+      {
+        r'==': (dynamic instance) => (x) => instance == x,
+        r'toString': (dynamic instance) => instance.toString,
+        r'noSuchMethod': (dynamic instance) => instance.noSuchMethod,
+        r'hashCode': (dynamic instance) => instance.hashCode,
+        r'runtimeType': (dynamic instance) => instance.runtimeType,
+        r'toJson': (dynamic instance) => instance.toJson,
+        r'nr': (dynamic instance) => instance.nr,
+        r'name': (dynamic instance) => instance.name,
+        r'date': (dynamic instance) => instance.date,
+        r'price': (dynamic instance) => instance.price
+      },
+      {
+        r'nr=': (dynamic instance, value) => instance.nr = value,
+        r'name=': (dynamic instance, value) => instance.name = value,
+        r'date=': (dynamic instance, value) => instance.date = value,
+        r'price=': (dynamic instance, value) => instance.price = value
+      },
+      null,
+      [])
+};
 
 final _memberSymbolMap = null;
 

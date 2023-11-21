@@ -15,7 +15,7 @@ class Model{
 
   Model.all({this.nr, this.name, this.date, this.price});
 
-  static final Map<String, String> _campos = {
+  static final Map<String, String> _fields = {
     'nr' : Constants.bigint,
     'name' : Constants.varchar['20']!,
     'date' : Constants.datetime,
@@ -39,18 +39,18 @@ class Model{
     'price': price,
   };
 
-  static final Iterable<String> _nombres = _campos.keys;
+  static final Iterable<String> _names = _fields.keys;
 
-  static final List<String> _primary = [_nombres.elementAt(0)];
-  static final List<String> _excepcion = [_nombres.elementAt(3)];
+  static final List<String> _primary = [_names.elementAt(0)];
+  static final List<String> _excepcion = [_names.elementAt(3)];
 
   static final List<String> _foreign = [];
 
   static List<String> get foreign => _foreign;
 
-  static Map<String, String> get campos => _campos;
+  static Map<String, String> get fields => _fields;
 
-  static Iterable<String> get nombres => _nombres;
+  static Iterable<String> get names => _names;
 
   static List<String> get primary => _primary;
 

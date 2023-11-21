@@ -67,7 +67,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _incrementCounter() async {
     Dao dao = Dao();
-    await dao.insert(Model());
+    await dao.insert(Model.all(nr: 1, date: '2020-12-01', name: 'test', price: 15.25));
     setState(() {
       // This call to setState tells the Flutter framework that something has
       // changed in this State, which causes it to rerun the build method below

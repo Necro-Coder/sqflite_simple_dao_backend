@@ -17,7 +17,7 @@ class GenericDao {
     final db = await DBProvider.db.database;
     int res = 0;
     res = await db!.insert('${newReg.runtimeType}', newReg.toJson());
-    print(PrintHandler.greenBold('You just insert $res items to ${newReg.runtimeType}.✨'));
+    print(PrintHandler.greenBold('sqflite_simple_dao_backend: You just insert $res items to ${newReg.runtimeType}.✨'));
     return res;
   }
 
@@ -122,7 +122,7 @@ class GenericDao {
     sql = '$start $changesStr $finalStr';
 
     final res = db!.rawUpdate(sql);
-    print(PrintHandler.yellowBold('You just updated $res items to ${newReg.runtimeType}.📖'));
+    print(PrintHandler.yellowBold('sqflite_simple_dao_backend: You just updated $res items to ${newReg.runtimeType}.📖'));
     return res;
   }
 
@@ -180,7 +180,7 @@ class GenericDao {
     }
 
     final res = await db!.rawDelete(sql);
-    print(PrintHandler.redBold('You just deleted $res items from ${obj.runtimeType}.⚠️'));
+    print(PrintHandler.redBold('sqflite_simple_dao_backend: You just deleted $res items from ${obj.runtimeType}.⚠️'));
     return res;
   }
   /* endregion: Delete */
@@ -277,7 +277,7 @@ class GenericDao {
     for (var x in res) {
       listRes.add(reflect.type.newInstance('fromJson', [x]));
     }
-    print(PrintHandler.blueBold('The query returned ${listRes.length} values from ${obj.runtimeType}'));
+    print(PrintHandler.blueBold('sqflite_simple_dao_backend: The query returned ${listRes.length} values from ${obj.runtimeType}'));
     return listRes;
   }
   /* endregion: Select */
