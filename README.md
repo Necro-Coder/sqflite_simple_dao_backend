@@ -251,7 +251,7 @@ const <int>[13, 14, 15, 16, 17],
 If this code does not appear, you should check for errors in the installation. If there are no errors and it still does not appear, run the command again. If you continue to have problems, you can contact me at <nunezcotanoruben@gmail.com>
 
 ### Remember (Important)
-This Dart command needs to be executed.
+This Dart command needs to be executed in case you modify anything about the reflectable package.
 ```bash
 dart lib/builder.dart lib/main.dart
 ```
