@@ -12,7 +12,7 @@
 /// - For custom data types, use the `custom` map. You can add any custom data types you want.
 class Constants {
   static const String coma = ',';
-  static const Map<String, String> varchar = {
+  static Map<String, String> varchar = {
     '1': 'VARCHAR(1)',
     '2': 'VARCHAR(2)',
     '4': 'VARCHAR(4)',
@@ -28,11 +28,11 @@ class Constants {
     '150': 'VARCHAR(150)',
     '255': 'VARCHAR(255)',
   };
-  static const Map<String, String> decimal = {
+  static Map<String, String> decimal = {
     '9,2': 'DECIMAL(9,2)',
     '18,2': 'DECIMAL(18,2)'
   };
-  static const Map<String, String> custom = {};
+  static Map<String, String> custom = {};
   static const String integer = 'INTEGER';
   static const String text = 'TEXT';
   static const String boolean = 'BOOLEAN';
