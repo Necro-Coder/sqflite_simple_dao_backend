@@ -418,7 +418,7 @@ Performs a batch delete operation on a table.
 
 This method takes a list of [objectsToDelete] as a parameter and performs a batch delete operation.
 It first gets the database instance and starts a batch operation.
-Then, for each object in the list of objects to delete, it uses reflection to get
+Then, for each object in the listcd  of objects to delete, it uses reflection to get
 the primary key(s) of the object. It constructs a WHERE clause for the delete
 operation using the primary key(s) and their values.
 
