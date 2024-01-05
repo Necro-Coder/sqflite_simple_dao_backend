@@ -2,8 +2,8 @@
 // https://github.com/dart-lang/reflectable.
 
 import 'dart:core';
-import 'package:example/database/entity/Model.dart' as prefix1;
-import 'package:sqflite_simple_dao_backend/database/database/Reflectable.dart'
+import 'package:example/database/entity/model.dart' as prefix1;
+import 'package:sqflite_simple_dao_backend/database/database/reflectable.dart'
     as prefix0;
 
 // ignore_for_file: camel_case_types
@@ -182,7 +182,7 @@ final _data = <r.Reflectable, r.ReflectorData>{
       [])
 };
 
-final _memberSymbolMap = null;
+const _memberSymbolMap = null;
 
 void initializeReflectable() {
   r.data = _data;

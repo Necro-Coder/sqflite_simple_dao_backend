@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:example/database/model_dao.dart';
-import 'package:sqflite_simple_dao_backend/database/database/Reflectable.dart';
+import 'package:sqflite_simple_dao_backend/database/database/reflectable.dart';
 import 'package:sqflite_simple_dao_backend/database/params/constants.dart';
 
 @reflector
