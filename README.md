@@ -29,6 +29,7 @@ This package is designed to simplify database interactions using [reflectable](h
   - [Remember](#remember-important)
 
 - [Usage](#usage)
+
   -[Batch](#batch-methods)
 
 ## Prerequisites
