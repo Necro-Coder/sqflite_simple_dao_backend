@@ -4,7 +4,7 @@ import 'package:sqflite_simple_dao_backend/database/database/database_service.da
 import 'package:sqflite_simple_dao_backend/database/utilities/print_handle.dart';
 
 class GenericDao {
-  GenericDao();
+  const GenericDao();
   /* region: Dao Reflectable Methods */
   /* region: Insert */
   /// This function takes a record [newReg] and inserts it into the corresponding table.
@@ -13,12 +13,14 @@ class GenericDao {
   /// It first gets a reference to the database using `DBProvider.db.database`.
   /// Then, it inserts [newReg] into the table corresponding to its runtime type, converting [newReg] to JSON format for insertion.
   /// The method returns the result of the insertion operation as an integer.
+  @Deprecated(
+      'This method is deprecated and will be deleted on the next release. Please use `insertSingle` or `batchInsert` instead.')
   Future<int> newReg(dynamic newReg) async {
     final db = await DBProvider.db.database;
     int res = 0;
     res = await db!.insert('${newReg.runtimeType}', newReg.toJson());
 
-    PrintHandler.warninLogger.i(
+    PrintHandler.warningLogger.i(
         'sqflite_simple_dao_backend: You just insert $res items to ${newReg.runtimeType}.✨');
     return res;
   }
@@ -35,11 +37,12 @@ class GenericDao {
   /// Note: Boolean fields should be added to the if condition to prevent errors.
   ///
   /// Returns a Future that completes with the number of updated records.
+  @Deprecated(
+      'This method is deprecated and will be deleted on the next release. Please use `updateSingle` or `batchUpdate` instead.')
   Future<int> updateReg(dynamic newReg) async {
     final db = await DBProvider.db.database;
     Map<String, String> changes = {};
     List<String> auxPr = [];
-    List<String> auxFr = [];
     String sql = '';
 
     /* Retrieve the primary keys of the table. */
@@ -47,19 +50,15 @@ class GenericDao {
     var classMirror = reflector.reflectType(newReg) as ClassMirror;
 
     List<String> primary =
-    reflectNew.type.invokeGetter("primary") as List<String>;
-
-    /* Retrieve the foreign keys of the table. */
-    List<String> foreign =
-    reflectNew.type.invokeGetter("foreign") as List<String>;
+        reflectNew.type.invokeGetter("primary") as List<String>;
 
     /* Retrieve all the field names. */
     Iterable<String> names =
-    reflectNew.type.invokeGetter("names") as Iterable<String>;
+        reflectNew.type.invokeGetter("names") as Iterable<String>;
 
     /* Retrieve the fields for comparison. */
     Map<String, String> fields =
-    classMirror.invokeGetter("fields") as Map<String, String>;
+        classMirror.invokeGetter("fields") as Map<String, String>;
 
     /* Retrieve the record to be updated. */
     for (var x in primary) {
@@ -94,10 +93,10 @@ class GenericDao {
     for (var x in changes.keys) {
       if (x != changes.keys.last) {
         changesStr =
-        '$changesStr $x = ${changes[x] == 'true' ? 1 : changes[x] == 'false' ? 0 : changes[x]},';
+            '$changesStr $x = ${changes[x] == 'true' ? 1 : changes[x] == 'false' ? 0 : changes[x]},';
       } else {
         changesStr =
-        '$changesStr $x = ${changes[x] == 'true' ? 1 : changes[x] == 'false' ? 0 : changes[x]}';
+            '$changesStr $x = ${changes[x] == 'true' ? 1 : changes[x] == 'false' ? 0 : changes[x]}';
       }
     }
     String finalStr = '';
@@ -107,7 +106,7 @@ class GenericDao {
       if (x == primary.first) {
         if (fields[x]!.toLowerCase().contains('date')) {
           finalStr =
-          ' WHERE $x = "${reflectNew.invokeGetter(x).toString().split(' ')[0]}"';
+              ' WHERE $x = "${reflectNew.invokeGetter(x).toString().split(' ')[0]}"';
         } else {
           finalStr = ' WHERE $x = "${reflectNew.invokeGetter(x)}"';
         }
@@ -124,7 +123,7 @@ class GenericDao {
     sql = '$start $changesStr $finalStr';
 
     final res = db!.rawUpdate(sql);
-    PrintHandler.warninLogger.w(
+    PrintHandler.warningLogger.w(
         'sqflite_simple_dao_backend: You just updated $res items to ${newReg.runtimeType}.📖');
     return res;
   }
@@ -145,9 +144,10 @@ class GenericDao {
   /// The function also takes an optional parameter [whereArgs] which can be used to specify additional conditions for the WHERE clause.
   ///
   /// Returns a Future that completes with the number of deleted records.
+  @Deprecated(
+      'This method is deprecated and will be deleted on the next release. Please use `deleteSingle` or `batchDelete` instead.')
   Future<int> delete(dynamic obj,
-      {bool all = true,
-        Map<String, String> whereArgs = const {'': ''}}) async {
+      {bool all = true, Map<String, String> whereArgs = const {'': ''}}) async {
     final db = await DBProvider.db.database;
     String sql = 'DELETE FROM ${obj.runtimeType}';
 
@@ -155,7 +155,7 @@ class GenericDao {
     if (!all) {
       InstanceMirror reflectNew = reflector.reflect(obj);
       List<String> primary =
-      reflectNew.type.invokeGetter("primary") as List<String>;
+          reflectNew.type.invokeGetter("primary") as List<String>;
 
       /* Construct the WHERE clause. */
       String where = ' WHERE ';
@@ -183,7 +183,7 @@ class GenericDao {
     }
 
     final res = await db!.rawDelete(sql);
-    PrintHandler.warninLogger.e(
+    PrintHandler.warningLogger.e(
         'sqflite_simple_dao_backend: You just deleted $res items from ${obj.runtimeType}.⚠️');
     return res;
   }
@@ -203,8 +203,8 @@ class GenericDao {
   /// Note: If the field is a boolean, it should be represented as 0 or 1, otherwise the program will fail.
   Future<List<dynamic>> getReg(dynamic obj,
       {List<String>? primaryKeys,
-        Map<String, String>? whereArgs,
-        List<String>? fields}) async {
+      Map<String, String>? whereArgs,
+      List<String>? fields}) async {
     List listRes = [];
     InstanceMirror reflect = reflector.reflect(obj);
     final db = await DBProvider.db.database;
@@ -216,17 +216,17 @@ class GenericDao {
         if (x != fields.last) {
           sql = "$sql $x,";
         } else {
-          sql = "$sql $x FROM ${obj.runtimeType}";
+          sql = "$sql $x FROM ${obj.runtimeType.toString().toLowerCase()}s";
         }
       }
     } else {
-      sql = "$sql * FROM ${obj.runtimeType}";
+      sql = "$sql * FROM ${obj.runtimeType.toString().toLowerCase()}s";
     }
 
     /* Check if filtering by primary key is required. */
     if (primaryKeys != null && primaryKeys.isNotEmpty) {
       List<String> finalPrimary =
-      reflect.type.invokeGetter("primary") as List<String>;
+          reflect.type.invokeGetter("primary") as List<String>;
       int cont = 0;
       for (var x in finalPrimary) {
         if (x == finalPrimary.last) {
@@ -246,14 +246,13 @@ class GenericDao {
       }
     }
 
-
     /* Construct the specific WHERE clause. */
     if (whereArgs != null && whereArgs.isNotEmpty) {
-      Iterable<String> claves = whereArgs.keys;
+      Iterable<String> keys = whereArgs.keys;
       String body = "";
 
-      for (var x in claves) {
-        if (x != claves.last) {
+      for (var x in keys) {
+        if (x != keys.last) {
           if (whereArgs[x]!.contains('SELECT')) {
             body = "$body$x = ${whereArgs[x]} and ";
           } else {
@@ -268,8 +267,7 @@ class GenericDao {
         }
       }
       /* Check if the WHERE clause has been created when processing the primary keys. */
-      if (primaryKeys != null &&
-          primaryKeys.isNotEmpty) {
+      if (primaryKeys != null && primaryKeys.isNotEmpty) {
         // The WHERE clause has been created.
         sql = "$sql $body";
       } else {
@@ -281,7 +279,7 @@ class GenericDao {
     for (var x in res) {
       listRes.add(reflect.type.newInstance('fromJson', [x]));
     }
-    PrintHandler.warninLogger.w(
+    PrintHandler.warningLogger.w(
         'sqflite_simple_dao_backend: The query returned ${listRes.length} values from ${obj.runtimeType} ⌨️');
     return listRes;
   }
@@ -289,6 +287,10 @@ class GenericDao {
   /* endregion: Dao Reflectable Methods */
 
   /* region: Raw Dao */
+  @Comment(
+      'The utilization of raw methods is generally discouraged due to their potential to consume substantial memory resources and impede program execution speed. Their implementation often involves processing data in an uncompressed or unoptimized manner, which can lead to performance degradation and memory bloat. Therefore, it is advisable to employ alternative programming techniques that offer better memory management and computational efficiency.',
+      'Do not use raw methods unless you are sure that they are the best solution for your problem.',
+      true)
   Future<int> rawInsert(String sql) async {
     final db = await DBProvider.db.database;
     int result = 0;
@@ -296,6 +298,10 @@ class GenericDao {
     return result;
   }
 
+  @Comment(
+      'The utilization of raw methods is generally discouraged due to their potential to consume substantial memory resources and impede program execution speed. Their implementation often involves processing data in an uncompressed or unoptimized manner, which can lead to performance degradation and memory bloat. Therefore, it is advisable to employ alternative programming techniques that offer better memory management and computational efficiency.',
+      'Do not use raw methods unless you are sure that they are the best solution for your problem.',
+      true)
   Future<int> rawUpdate(String sql) async {
     final db = await DBProvider.db.database;
     int result = 0;
@@ -303,6 +309,10 @@ class GenericDao {
     return result;
   }
 
+  @Comment(
+      'The utilization of raw methods is generally discouraged due to their potential to consume substantial memory resources and impede program execution speed. Their implementation often involves processing data in an uncompressed or unoptimized manner, which can lead to performance degradation and memory bloat. Therefore, it is advisable to employ alternative programming techniques that offer better memory management and computational efficiency.',
+      'Do not use raw methods unless you are sure that they are the best solution for your problem.',
+      true)
   Future<int> rawDelete(String sql) async {
     final db = await DBProvider.db.database;
     int result = 0;

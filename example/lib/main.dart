@@ -1,8 +1,9 @@
 import 'package:example/database/Parameters.dart';
 import 'package:example/database/entity/Model.dart';
 import 'package:flutter/material.dart';
-import 'package:sqflite_simple_dao_backend/database/dao_conector.dart';
-import 'package:reflectable/reflectable.dart';
+import 'package:sqflite_simple_dao_backend/database/dao_connector.dart';
+import 'package:sqflite_simple_dao_backend/database/database/sql_builder.dart';
+import 'package:sqflite_simple_dao_backend/database/utilities/print_handle.dart';
 import 'main.reflectable.dart';
 
 void main() {
@@ -67,7 +68,51 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _incrementCounter() async {
     Dao dao = Dao();
-    await dao.insert(Model.all(nr: 1, date: '2020-12-01', name: 'test', price: 15.25));
+
+    List<Model> models = [
+      Model.all(nr: 1, date: '2020-12-01', name: 'test1', price: 15.25),
+      Model.all(nr: 2, date: '2020-12-02', name: 'test2', price: 15.25),
+      Model.all(nr: 3, date: '2020-12-03', name: 'test3', price: 15.25),
+      Model.all(nr: 4, date: '2020-12-04', name: 'test4', price: 15.25),
+      Model.all(nr: 5, date: '2020-12-05', name: 'test5', price: 15.25),
+      Model.all(nr: 6, date: '2020-12-06', name: 'test6', price: 15.25),
+      Model.all(nr: 7, date: '2020-12-07', name: 'test7', price: 15.25),
+    ];
+
+    await dao.insertSingle(objectToInsert: models[0]);
+
+    await dao.batchInsert(objectsToInsert: models.sublist(1));
+
+    PrintHandler.warningLogger.t('Printing data before update and delete');
+    await printData(dao);
+    models[0].price = 20.25;
+    await dao.updateSingle(objectToUpdate: models[0]);
+
+    // await dao.batchUpdate(objectsToUpdate: models.sublist(1));
+
+    PrintHandler.warningLogger
+        .t('Printing data after update and before delete');
+
+    await printData(dao);
+
+    PrintHandler.warningLogger.t('Printing full model');
+    var modelsResult = await dao.select<Model>(
+        sqlBuilder: SqlBuilder().querySelect().queryFrom(table: 'models'),
+        model: Model(),
+        print: true);
+
+    for (var x in modelsResult) {
+      PrintHandler.warningLogger.i(x.toJson());
+    }
+
+    await dao.deleteSingle(objectToDelete: models[0]);
+
+    await dao.batchDelete(objectsToDelete: models.sublist(1, 3));
+
+    PrintHandler.warningLogger.t('Printing data after delete');
+
+    await printData(dao);
+
     setState(() {
       // This call to setState tells the Flutter framework that something has
       // changed in this State, which causes it to rerun the build method below
@@ -76,6 +121,23 @@ class _MyHomePageState extends State<MyHomePage> {
       // called again, and so nothing would appear to happen.
       _counter++;
     });
+  }
+
+  Future<void> printData(Dao dao) async {
+    var response = await dao.select(
+        sqlBuilder: SqlBuilder()
+            .querySelect(fields: [
+              'nr',
+              'date',
+              'name',
+              'price',
+            ])
+            .queryFrom(table: 'models')
+            .queryOrder());
+    for (var element in response) {
+      PrintHandler.warningLogger.i(
+          'nr: ${element['nr']} -- date: ${element['date']} -- name: ${element['name']} -- price: ${element['price']}');
+    }
   }
 
   @override
@@ -93,7 +155,7 @@ class _MyHomePageState extends State<MyHomePage> {
         // change color while the other colors stay the same.
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
+        // the App.build method, and use it to set our appBar title.
         title: Text(widget.title),
       ),
       body: Center(
@@ -112,7 +174,7 @@ class _MyHomePageState extends State<MyHomePage> {
           //
           // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
           // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
+          // wireFrame for each widget.
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const Text(

@@ -36,92 +36,60 @@ class DBProvider {
       onOpen: (db) {},
       onCreate: (db, version) async {
         // For each table in DbParameters.tables, it creates the table if it does not exist.
-        for (var x in DbParameters.tables) {
-          var classMirror = reflector.reflectType(x) as ClassMirror;
-
-          Iterable<String> nombres =
-          classMirror.invokeGetter("names") as Iterable<String>;
-          Map<String, String> campos =
-          classMirror.invokeGetter("fields") as Map<String, String>;
-          List<String> primary =
-          classMirror.invokeGetter("primary") as List<String>;
-          List<String> foreign =
-          classMirror.invokeGetter("foreign") as List<String>;
-
-          String sql = '''CREATE TABLE IF NOT EXISTS $x (''';
-
-          for (var nombre in nombres) {
-            sql = '$sql$nombre ${campos[nombre]}, ';
-          }
-
-          sql = '$sql PRIMARY KEY(';
-          for (var primaryKey in primary) {
-            if (primaryKey != primary.last) {
-              sql = '$sql$primaryKey,';
-            } else {
-              if (foreign.isNotEmpty) {
-                sql = '$sql$primaryKey),';
-                for (var foreignKey in foreign) {
-                  if (foreignKey == foreign.last) {
-                    sql = '$sql$foreignKey';
-                  } else {
-                    sql = '$sql$foreignKey, ';
-                  }
-                }
-              } else {
-                sql = '$sql$primaryKey)';
-              }
-            }
-          }
-
-          sql = '$sql);';
-          await db.execute(sql);
-        }
+        await createDatabase(db);
       },
       onUpgrade: (db, oldVersion, newVersion) async {
         switch (oldVersion) {
           default:
-          // For each table in DbParameters.tables, it creates the table if it does not exist.
-            for (var x in DbParameters.tables) {
-              var classMirror = reflector.reflectType(x) as ClassMirror;
-              Iterable<String> nombres =
-              classMirror.invokeGetter("names") as Iterable<String>;
-              Map<String, String> campos =
-              classMirror.invokeGetter("fields") as Map<String, String>;
-              List<String> primary =
-              classMirror.invokeGetter("primary") as List<String>;
-              List<String> foreign =
-              classMirror.invokeGetter("foreign") as List<String>;
-
-              String sql = '''CREATE TABLE IF NOT EXISTS $x (''';
-              for (var i in nombres) {
-                sql = '$sql$i ${campos[i]}, ';
-              }
-              sql = '$sql PRIMARY KEY(';
-              for (var u in primary) {
-                if (u != primary.last) {
-                  sql = '$sql$u,';
-                } else {
-                  if (foreign.isNotEmpty) {
-                    sql = '$sql$u),';
-                    for (var f in foreign) {
-                      if (f == foreign.last) {
-                        sql = '$sql$f';
-                      } else {
-                        sql = '$sql$f, ';
-                      }
-                    }
-                  } else {
-                    sql = '$sql$u)';
-                  }
-                }
-              }
-
-              sql = '$sql);';
-              await db.execute(sql);
-            }
+            // For each table in DbParameters.tables, it creates the table if it does not exist.
+            await createDatabase(db);
         }
       },
     );
+  }
+
+  Future<void> createDatabase(Database db) async {
+    for (var x in DbParameters.tables) {
+      var classMirror = reflector.reflectType(x) as ClassMirror;
+
+      Iterable<String> names =
+          classMirror.invokeGetter("names") as Iterable<String>;
+      Map<String, String> campos =
+          classMirror.invokeGetter("fields") as Map<String, String>;
+      List<String> primary =
+          classMirror.invokeGetter("primary") as List<String>;
+      List<String> foreign =
+          classMirror.invokeGetter("foreign") as List<String>;
+
+      String sql =
+          '''CREATE TABLE IF NOT EXISTS ${x.toString().toLowerCase()}s (''';
+
+      for (var nombre in names) {
+        sql = '$sql$nombre ${campos[nombre]}, ';
+      }
+
+      sql = '$sql PRIMARY KEY(';
+      for (var primaryKey in primary) {
+        if (primaryKey != primary.last) {
+          sql = '$sql$primaryKey,';
+        } else {
+          if (foreign.isNotEmpty) {
+            sql = '$sql$primaryKey),';
+            for (var foreignKey in foreign) {
+              if (foreignKey == foreign.last) {
+                sql = '$sql$foreignKey';
+              } else {
+                sql = '$sql$foreignKey, ';
+              }
+            }
+          } else {
+            sql = '$sql$primaryKey)';
+          }
+        }
+      }
+
+      sql = '$sql);';
+      await db.execute(sql);
+    }
   }
 }

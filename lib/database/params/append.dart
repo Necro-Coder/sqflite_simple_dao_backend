@@ -1,8 +1,6 @@
-import 'package:ansicolor/ansicolor.dart';
 import 'package:meta/meta.dart';
 import 'package:sqflite_simple_dao_backend/database/params/constants.dart';
 import 'package:sqflite_simple_dao_backend/database/params/db_parameters.dart';
-import 'package:sqflite_simple_dao_backend/database/params/log_params.dart';
 import 'package:sqflite_simple_dao_backend/database/utilities/print_handle.dart';
 
 /// These methods ensure the safe usage of maps in the Constants class.
@@ -27,16 +25,12 @@ class Append {
       @required required String value,
       bool override = false,
       String type = ''}) {
-    ansiColorDisabled = false;
     switch (type.toLowerCase()) {
       case ('varchar'):
         _change(Constants.varchar, 'varchar', key, value, override);
         break;
       case ('decimal'):
         _change(Constants.decimal, 'decimal', key, value, override);
-        break;
-      case ('custom'):
-        _change(Constants.custom, 'custom', key, value, override);
         break;
       default:
         _change(Constants.custom, 'custom', key, value, override);
@@ -61,54 +55,44 @@ class Append {
       {@required required String param,
       @required required dynamic value,
       update = false}) {
-    ansiColorDisabled = false;
     switch (param.toLowerCase()) {
       case 'name':
         if ('${value.runtimeType}'.toLowerCase().contains('string')) {
           DbParameters.dbName = value;
-          PrintHandler.warninLogger.i(
+          PrintHandler.warningLogger.i(
               'sqflite_simple_dao_backend: The value for the database name is now $value. 💫');
         } else {
-          PrintHandler.warninLogger.e(
-              'sqflite_simple_dao_backend: Unfortunately, the value is ${value.runtimeType} and it should be String, skiping... 😭');
+          PrintHandler.warningLogger.e(
+              'sqflite_simple_dao_backend: Unfortunately, the value is ${value.runtimeType} and it should be String, skipping... 😭');
         }
         break;
       case 'tables':
         if ('${value.runtimeType}'.toLowerCase().contains('list')) {
           DbParameters.tables = value;
-          PrintHandler.warninLogger.i(
+          PrintHandler.warningLogger.i(
               'sqflite_simple_dao_backend: The value for the tables list just updated with ${DbParameters.tables.length} elements.✨');
         } else if ('${value.runtimeType}'.toLowerCase().contains('type') &&
             update) {
           DbParameters.tables.add(value);
-          PrintHandler.warninLogger.i(
+          PrintHandler.warningLogger.i(
               'sqflite_simple_dao_backend: You already insert ${value.toString()} to the tables list.😋');
         } else {
-          PrintHandler.warninLogger.e(
-              'sqflite_simple_dao_backend: Unfortunately, the value is ${value.runtimeType} and it should be List<Type>, skiping... 😭');
-          PrintHandler.warninLogger.w(
+          PrintHandler.warningLogger.e(
+              'sqflite_simple_dao_backend: Unfortunately, the value is ${value.runtimeType} and it should be List<Type>, skipping... 😭');
+          PrintHandler.warningLogger.w(
               'sqflite_simple_dao_backend: In case you want to update the list, just set update = true. 😉');
         }
       case 'version':
         if ('${value.runtimeType}'.toLowerCase().contains('int')) {
           DbParameters.dbVersion = value;
-          PrintHandler.warninLogger.i(
+          PrintHandler.warningLogger.i(
               'sqflite_simple_dao_backend: The value for the database version is now $value. 💫');
         } else {
-          PrintHandler.warninLogger.e(
-              'sqflite_simple_dao_backend: Unfortunately, the value is ${value.runtimeType} and it should be int, skiping... 😭');
+          PrintHandler.warningLogger.e(
+              'sqflite_simple_dao_backend: Unfortunately, the value is ${value.runtimeType} and it should be int, skipping... 😭');
         }
     }
   }
-
-  /// This function sets the value of the shouldLog parameter in the LogParams class.
-  /// If shouldLog is set to true, logging will be enabled. If it is set to false, logging will be disabled.
-  ///
-  /// [shouldLog] A boolean value that determines whether logging should be enabled or disabled.
-  void log(bool shouldLog) {
-    LogParams.shouldLog = shouldLog;
-  }
-
   /* endregion */
 
   /* region: Useful private method */
@@ -117,14 +101,14 @@ class Append {
     Iterable checkList = map.keys;
     if (!checkList.contains(key)) {
       map.addAll({key: value});
-      PrintHandler.warninLogger.i(
+      PrintHandler.warningLogger.i(
           'sqflite_simple_dao_backend: New value {$key: $value} added to $name constant value list 👏');
     } else if (checkList.contains(key) && map[key] != value && override) {
       map[key] = value;
-      PrintHandler.warninLogger.w(
+      PrintHandler.warningLogger.w(
           'sqflite_simple_dao_backend: The value {$key: $value} was already in $name constant value list. Updating...💱');
     } else {
-      PrintHandler.warninLogger.w(
+      PrintHandler.warningLogger.w(
           'sqflite_simple_dao_backend: The value {$key: $value} was already in $name constant value list. Skipping...🪜');
     }
   }
