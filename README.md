@@ -29,6 +29,7 @@ This package is designed to simplify database interactions using [reflectable](h
   - [Remember](#remember-important)
 
 - [Usage](#usage)
+  -[Batch](#batch-methods)
 
 ## Prerequisites
 
@@ -42,13 +43,21 @@ This package can automatically create a database based on the models you define.
 
   - **Insert:** Simply pass the object you wish to insert into the database.
   - **Update:** Pass the object you wish to update. The logic behind this method will compare the object in the database and only update the fields that have changed, optimizing database access.
-  - **Delete:** Pass the object you wish to delete. You can also specify if you want to delete all the records in a table by setting `all = true`.
+  - **Delete:** Pass the object you wish to delete.
+  - **Select:** This functionality is designed to build a complex select query using familiar SQL syntax. It's simplified through the use of chaining methods, making the query construction process easier.
+
+  (For more information go towards the [Batch](#batch-methods) section)
+  - **Batch Insert:** Is designed to insert multiple records into a database in a single operation.
+  - **Batch Update:**  Is designed to update multiple records into a database in a single operation.
+  - **Batch Delete:**  Is designed to delete multiple records into a database in a single operation.
+  - **Batch Insert or Update:** Is designed to insert or update multiple records into a database in a single operation.
+  - **Batch Insert or Delete:** Is designed to insert or delete multiple records into a database in a single operation.
+
 - Parameters: You can modify the database name, version (for database updates), and the tables you wish to create.
 
 - Constants:You can add, modify, or change constants to help create a model structure that sqflite
   recognizes. This feature is crucial for customizing the package to meet your specific needs.
-- The package also print logs in the console in order to display the changes on the database. You
-  can turn it off with the `Append` class.
+- The package also print logs in the console in order to display the changes on the database. Does not log in production.
 
 ## Getting Started
 
@@ -91,66 +100,51 @@ The structure is as follows: *(The name of the entity will be the name of the ta
 ```dart
 import 'dart:convert';
 
+import 'package:example/database/model_dao.dart';
 import 'package:sqflite_simple_dao_backend/database/database/Reflectable.dart';
 import 'package:sqflite_simple_dao_backend/database/params/constants.dart';
 
-/* Important to use the sqflite_simple_dao_backend to import the @reflector */
 @reflector
-class Model{
-  /* Variables we have in the model */
+class Model extends ModelDao {
   int? nr;
   String? name;
   String? date;
   double? price;
 
-  /* Empty constructor */
   Model();
 
-  /* Named constructor with all the fields and named '.all()' */
   Model.all({this.nr, this.name, this.date, this.price});
 
-  /* A map that contains the name of the fields and the database types. */
   static final Map<String, String> _fields = {
-    'nr' : Constants.bigint,
-    'name' : Constants.varchar['20']!,
-    'date' : Constants.datetime,
-    'price' : Constants.decimal['9,2']!
+    'nr': Constants.bigint,
+    'name': Constants.varchar['20']!,
+    'date': Constants.datetime,
+    'price': Constants.decimal['9,2']!
   };
 
-  /* This factory to create objects from json */
-  factory Model.fromRawJson(String str) =>
-      Model.fromJson(json.decode(str));
+  factory Model.fromRawJson(String str) => Model.fromJson(json.decode(str));
 
-  /* The fromJson */
   factory Model.fromJson(Map<String, dynamic> json) => Model.all(
-    nr: json['nr'],
-    name: json['name'],
-    date: json['date'],
-    price: json['price'],
-  );
+        nr: json['nr'],
+        name: json['name'],
+        date: json['date'],
+        price: json['price'],
+      );
 
-  /* The toJson */
   Map<String, dynamic> toJson() => {
-    'nr': nr,
-    'name': name,
-    'date': date,
-    'price': price,
-  };
+        'nr': nr,
+        'name': name,
+        'date': date,
+        'price': price,
+      };
 
-  /* An iterable object with all the keys in the fields map. */
   static final Iterable<String> _names = _fields.keys;
 
-  /* A list with the primary key values */
   static final List<String> _primary = [_names.elementAt(0)];
-  
-  /* A exception list in order to remove some elements from the iteration */
   static final List<String> _exception = [_names.elementAt(3)];
 
-  /* A list with the complete line (string) of a foreing key. Example behind.*/
   static final List<String> _foreign = [];
-  /* Example: 'FOREIGN KEY (model_id) REFERENCES model (id)' */
 
-  /* Getters and Setters*/
   static List<String> get foreign => _foreign;
 
   static Map<String, String> get fields => _fields;
@@ -160,7 +154,20 @@ class Model{
   static List<String> get primary => _primary;
 
   static List<String> get exception => _exception;
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is Model && other.nr == nr;
+  }
+
+  @override
+  int get hashCode {
+    return nr.hashCode;
+  }
 }
+
 ```
 
 The `@reflector` annotation is **NECESSARY** to use the package.
@@ -287,11 +294,6 @@ dart lib/builder.dart lib/main.dart
 
 ## Usage
 
-Main example of using this package.
+This package is designed for ease of use. The implementation is straightforward, just as I would prefer to use this package.
 
-```dart
-void insertNewReg() async {
-  Dao dao = Dao();
-  await dao.insert(Model.all(nr: 1, date: '2020-12-01', name: 'test', price: 15.25)); 
-}
-```
+### Batch Methods
