@@ -10,52 +10,50 @@ For general information about developing packages, see the Dart guide for
 and the Flutter guide for
 [developing packages and plugins](https://flutter.dev/developing-packages).
 -->
+# Introduction
 
 This package is designed to simplify database interactions using [reflectable](https://github.com/google/reflectable.dart) and [sqflite](https://github.com/tekartik/sqflite/tree/master/sqflite). It aims to facilitate the creation of Data Access Objects (DAOs) in your Flutter application.
 
-Index
--------------
+## Index
+
 - [Index](#index)
 - [Prerequisites](#prerequisites)
 - [Features](#features)
 - [Getting Started](#getting-started)
 
-    -   [Configuring the package reflectable](#configuring-the-package-reflectable)
-    -   [Models structure](#models-structure)
-    -   [Main.dart](#maindart)
-    -   [Imports](#imports-you-can-copy-and-paste)
-    -   [Method](#method-you-should-copy-and-paste)
-    -   [Remember](#remember-important-)
+  - [Configuring the package reflectable](#configuring-the-package-reflectable)
+  - [Models structure](#models-structure)
+  - [Main.dart](#maindart)
+  - [Imports](#imports-you-can-copy-and-paste)
+  - [Method](#method-you-should-copy-and-paste)
+  - [Remember](#remember-important)
 
--   [Usage](#usage)
+- [Usage](#usage)
 
-
-Prerequisites
--------------
+## Prerequisites
 
 To use this package, you must have the [reflectable](https://github.com/google/reflectable.dart) dependency installed in your project. Please refer to the [Getting Started](#getting-started) section for more details on how to set up and use this package.
 
-Features
---------
+## Features
 
 This package can automatically create a database based on the models you define. Once the database is created, the following features are available:
 
--   DAO Operations:
+- DAO Operations:
 
-    -   **Insert:** Simply pass the object you wish to insert into the database.
-    -   **Update:** Pass the object you wish to update. The logic behind this method will compare the object in the database and only update the fields that have changed, optimizing database access.
-    -   **Delete:** Pass the object you wish to delete. You can also specify if you want to delete all the records in a table by setting `all = true`.
--   Parameters: You can modify the database name, version (for database updates), and the tables you wish to create.
+  - **Insert:** Simply pass the object you wish to insert into the database.
+  - **Update:** Pass the object you wish to update. The logic behind this method will compare the object in the database and only update the fields that have changed, optimizing database access.
+  - **Delete:** Pass the object you wish to delete. You can also specify if you want to delete all the records in a table by setting `all = true`.
+- Parameters: You can modify the database name, version (for database updates), and the tables you wish to create.
 
 - Constants:You can add, modify, or change constants to help create a model structure that sqflite
   recognizes. This feature is crucial for customizing the package to meet your specific needs.
 - The package also print logs in the console in order to display the changes on the database. You
   can turn it off with the `Append` class.
 
-Getting Started
---------
+## Getting Started
 
 ### Configuring the package [reflectable](https://github.com/google/reflectable.dart)
+
 Firstly, you need to install the [reflectable](https://github.com/google/reflectable.dart) package from [pub.dev](https://pub.dev/packages/reflectable).
 Once installed, you should create a `build.yaml` file with the following structure:
 
@@ -69,7 +67,8 @@ targets:
         options:
           formatted: true
 ```
-I recommend keeping all the entities in a single folder for ease of use with  [reflectable](https://github.com/google/reflectable.dart). 
+
+I recommend keeping all the entities in a single folder for ease of use with  [reflectable](https://github.com/google/reflectable.dart).
 
 Next, you need to create a `builder.dart` file. It will always look like this:
 
@@ -84,9 +83,11 @@ main(List<String> arguments) async {
 Once this is done, we can proceed with the models.
 
 ### Models structure
+
 When creating the models, you must adhere to a strict structure. Given that reflection uses the *metadata* of our objects, we need to be very meticulous with this.
 
 The structure is as follows: *(The name of the entity will be the name of the table)*
+
 ```dart
 import 'dart:convert';
 
@@ -162,11 +163,12 @@ class Model{
 }
 ```
 
-The `@reflector` annotation is **NECESARY** to use the package.
+The `@reflector` annotation is **NECESSARY** to use the package.
 
 Once we have done this, we need to finish a couple of settings in `main.dart`.
 
 ### Main.dart
+
 The first thing is to use `WidgetsFlutterBinding.ensureInitialized();` to initialize the communication between the **Dart** layer and the **Flutter** engine. This is especially important for correctly initializing the database.
 
 Next, I strongly recommend creating a class called `Parameters` where we will have all the parameters we want from the database. In my case, it would look something like this:
@@ -204,15 +206,18 @@ After all this, we only have one thing left to do to get everything working. *In
 To initialize reflection, we must import the [reflectable](https://github.com/google/reflectable.dart) package and a class that will be created, as well as having the method called beforehand. At first, some errors will appear but they will disappear quickly.
 
 #### Imports: *(You can copy and paste)*
+
 ```dart
 import 'package:reflectable/reflectable.dart';
 import 'main.reflectable.dart';
 ```
 
 #### Method: *(You should copy and paste)*
+
 ```dart
 initializeReflectable();
 ```
+
 Both the `Parameters` class, `initializeReflectable`, and `WidgetsFlutterBinding.ensureInitialized()` must be initialized in the `main` like this:
 
 ```dart
@@ -227,6 +232,7 @@ void main() {
 Once we have this, we are ready to get everything up and running.
 
 We go to the console and write the following command:
+
 ```bash
 dart lib/builder.dart lib/main.dart
 ```
@@ -234,6 +240,7 @@ dart lib/builder.dart lib/main.dart
 Now it will create a file called `main.reflectable.dart`. We enter and we have to check that all the lines of code have been correctly created for the classes we have with the `@reflector`.
 
 It would look something like this: **(This is only a part of the code, there may be much more)**
+
 ```dart
 import 'dart:core';
 import 'package:example/database/entity/Model.dart' as prefix1;
@@ -271,7 +278,9 @@ const <int>[13, 14, 15, 16, 17],
 If this code does not appear, you should check for errors in the installation. If there are no errors and it still does not appear, run the command again. If you continue to have problems, you can contact me at <nunezcotanoruben@gmail.com>
 
 ### Remember (Important)
+
 This Dart command needs to be executed in case you modify anything about the [reflectable](https://github.com/google/reflectable.dart) package.
+
 ```bash
 dart lib/builder.dart lib/main.dart
 ```

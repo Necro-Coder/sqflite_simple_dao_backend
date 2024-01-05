@@ -6,8 +6,8 @@ import 'package:sqflite_simple_dao_backend/database/database/sql_builder.dart';
 import 'package:sqflite_simple_dao_backend/database/utilities/print_handle.dart';
 import 'package:sqflite_simple_dao_backend/sqflite_simple_dao_backend.dart';
 
-class NewDao {
-  const NewDao();
+class Dao {
+  const Dao();
 
   /// This method is used to get the database instance from the DBProvider.
   ///
@@ -206,9 +206,9 @@ class NewDao {
               .queryFrom(table: getTableName(objectToInsert)),
           model: objectToInsert,
           print: false);
-      if (queryResult.contains(objectToInsert.toJson())) {
+      if (queryResult.contains(objectToInsert)) {
         PrintHandler.warningLogger.e(
-            '⛔sqflite_simple_dao_backend⛔: Error inserting record: Record already exists. "-1" returned.');
+            '⚠️sqflite_simple_dao_backend⚠️: Record already exists. "-1" returned.');
         return -1;
       }
       var result = await db!
@@ -247,8 +247,44 @@ class NewDao {
     var db = await getDatabase();
     var batch = db!.batch();
 
-    for (var object in objectsToUpdate) {
-      batch.update(getTableName(object), object.toJson());
+    for (var objectToUpdate in objectsToUpdate) {
+      InstanceMirror reflectNew = reflector.reflect(objectToUpdate);
+      List<String> primary =
+          reflectNew.type.invokeGetter("primary") as List<String>;
+      dynamic existingObject = await select<dynamic>(
+          sqlBuilder: SqlBuilder()
+              .querySelect()
+              .queryFrom(table: getTableName(objectToUpdate))
+              .queryWhere(
+                  conditions: primary
+                      .map((e) => '$e = ${reflectNew.invokeGetter(e)}')
+                      .toList()),
+          model: objectToUpdate,
+          print: false);
+
+      Map<String, dynamic> updatedFields = {};
+      var whereArgs = [];
+
+      for (String field in objectToUpdate.toJson().keys) {
+        if (objectToUpdate.toJson()[field] !=
+            existingObject[0].toJson()[field]) {
+          updatedFields[field] = objectToUpdate.toJson()[field];
+        }
+      }
+
+      if (updatedFields.isEmpty) {
+        continue;
+      }
+      String where = '';
+      // Primary keys
+      for (var x in primary) {
+        whereArgs.add(reflectNew.invokeGetter(x));
+
+        where = makeWhere(where, x, primary);
+      }
+
+      batch.update(getTableName(objectToUpdate), updatedFields,
+          where: where, whereArgs: whereArgs);
     }
     try {
       var result = await batch.commit();
@@ -290,7 +326,7 @@ class NewDao {
 
     databaseModel = await select<dynamic>(
         sqlBuilder: SqlBuilder()
-            .querySelect(fields: primary)
+            .querySelect()
             .queryFrom(table: getTableName(objectToUpdate))
             .queryWhere(
                 conditions: primary

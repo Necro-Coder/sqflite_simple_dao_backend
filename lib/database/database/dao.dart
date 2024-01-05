@@ -1,5 +1,5 @@
 import 'package:reflectable/mirrors.dart';
-import 'package:sqflite_simple_dao_backend/database/database/Reflectable.dart';
+import 'package:sqflite_simple_dao_backend/database/database/reflectable.dart';
 import 'package:sqflite_simple_dao_backend/database/database/database_service.dart';
 import 'package:sqflite_simple_dao_backend/database/utilities/print_handle.dart';
 
