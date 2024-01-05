@@ -30,7 +30,8 @@ This package is designed to simplify database interactions using [reflectable](h
 
 - [Usage](#usage)
 
-  -[Batch](#batch-methods)
+  - [Batch](#batch-methods)
+
 
 ## Prerequisites
 
