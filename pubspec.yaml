@@ -1,5 +1,5 @@
 name: sqflite_simple_dao_backend
-description: A new Flutter package project.
+description: This package is designed to simplify database interactions using reflection and sqflite.
 homepage: https://github.com/Necro-Coder/sqflite_simple_dao_backend
 version: 1.0.1
 
