@@ -1,7 +1,7 @@
-import 'package:example/database/Parameters.dart';
-import 'package:example/database/entity/Model.dart';
+import 'package:example/database/parameters.dart';
+import 'package:example/database/entity/model.dart';
 import 'package:flutter/material.dart';
-import 'package:sqflite_simple_dao_backend/database/dao_connector.dart';
+import 'package:sqflite_simple_dao_backend/database/database/dao_connector.dart';
 import 'package:sqflite_simple_dao_backend/database/database/sql_builder.dart';
 import 'package:sqflite_simple_dao_backend/database/utilities/print_handle.dart';
 import 'main.reflectable.dart';
@@ -67,7 +67,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
   void _incrementCounter() async {
-    Dao dao = Dao();
+    Dao dao = const Dao();
 
     List<Model> models = [
       Model.all(nr: 1, date: '2020-12-01', name: 'test1', price: 15.25),
@@ -78,17 +78,18 @@ class _MyHomePageState extends State<MyHomePage> {
       Model.all(nr: 6, date: '2020-12-06', name: 'test6', price: 15.25),
       Model.all(nr: 7, date: '2020-12-07', name: 'test7', price: 15.25),
     ];
+    await models[0].insert();
 
-    await dao.insertSingle(objectToInsert: models[0]);
-
-    await dao.batchInsert(objectsToInsert: models.sublist(1));
+    await dao.batchInsert(objectsToInsert: models);
 
     PrintHandler.warningLogger.t('Printing data before update and delete');
     await printData(dao);
-    models[0].price = 20.25;
-    await dao.updateSingle(objectToUpdate: models[0]);
+    for (var x in models) {
+      x.price = 20.25;
+    }
+    await models[0].update();
 
-    // await dao.batchUpdate(objectsToUpdate: models.sublist(1));
+    await dao.batchUpdate(objectsToUpdate: models);
 
     PrintHandler.warningLogger
         .t('Printing data after update and before delete');
@@ -105,13 +106,9 @@ class _MyHomePageState extends State<MyHomePage> {
       PrintHandler.warningLogger.i(x.toJson());
     }
 
-    await dao.deleteSingle(objectToDelete: models[0]);
+    await models[0].delete();
 
     await dao.batchDelete(objectsToDelete: models.sublist(1, 3));
-
-    PrintHandler.warningLogger.t('Printing data after delete');
-
-    await printData(dao);
 
     setState(() {
       // This call to setState tells the Flutter framework that something has

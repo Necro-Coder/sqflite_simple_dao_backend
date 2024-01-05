@@ -1,10 +1,11 @@
 import 'dart:convert';
 
+import 'package:example/database/model_dao.dart';
 import 'package:sqflite_simple_dao_backend/database/database/Reflectable.dart';
 import 'package:sqflite_simple_dao_backend/database/params/constants.dart';
 
 @reflector
-class Model{
+class Model extends ModelDao {
   int? nr;
   String? name;
   String? date;
@@ -12,32 +13,30 @@ class Model{
 
   Model();
 
-
   Model.all({this.nr, this.name, this.date, this.price});
 
   static final Map<String, String> _fields = {
-    'nr' : Constants.bigint,
-    'name' : Constants.varchar['20']!,
-    'date' : Constants.datetime,
-    'price' : Constants.decimal['9,2']!
+    'nr': Constants.bigint,
+    'name': Constants.varchar['20']!,
+    'date': Constants.datetime,
+    'price': Constants.decimal['9,2']!
   };
 
-  factory Model.fromRawJson(String str) =>
-      Model.fromJson(json.decode(str));
+  factory Model.fromRawJson(String str) => Model.fromJson(json.decode(str));
 
   factory Model.fromJson(Map<String, dynamic> json) => Model.all(
-    nr: json['nr'],
-    name: json['name'],
-    date: json['date'],
-    price: json['price'],
-  );
+        nr: json['nr'],
+        name: json['name'],
+        date: json['date'],
+        price: json['price'],
+      );
 
   Map<String, dynamic> toJson() => {
-    'nr': nr,
-    'name': name,
-    'date': date,
-    'price': price,
-  };
+        'nr': nr,
+        'name': name,
+        'date': date,
+        'price': price,
+      };
 
   static final Iterable<String> _names = _fields.keys;
 
@@ -55,4 +54,16 @@ class Model{
   static List<String> get primary => _primary;
 
   static List<String> get exception => _exception;
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is Model && other.nr == nr;
+  }
+
+  @override
+  int get hashCode {
+    return nr.hashCode;
+  }
 }
