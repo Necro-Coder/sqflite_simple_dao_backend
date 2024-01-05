@@ -28,6 +28,7 @@ class SqlBuilder {
   ///
   /// The keys are the operator names in camel case and the values are the corresponding SQL operators.
   ///
+  /// May be there is some operator that you can't use for now, but I will add functionality for this operators in the future.
   /// Here is what each key-value pair represents:
   /// * 'equals': '=' - Represents the SQL equality operator.
   /// * 'notEquals': '<>' - Represents the SQL inequality operator.

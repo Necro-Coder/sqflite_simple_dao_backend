@@ -31,7 +31,16 @@ This package is designed to simplify database interactions using [reflectable](h
 - [Usage](#usage)
 
   - [Batch](#batch-methods)
-
+    - [Batch Insert](#batch-insert)
+      - [Batch Insert Usage](#batch-insert-usage)
+    - [Batch Update](#batch-update)
+      - [Batch Update Usage](#batch-update-usage)
+    - [Batch Delete](#batch-update)
+      - [Batch Delete Usage](#batch-delete-usage)
+    - [Batch Insert or Update](#batch-update)
+      - [Batch Insert or Update Usage](#batch-insert-or-update-usage)
+    - [Batch Insert or Delete](#batch-update)
+      - [Batch Insert or Delete Usage](#batch-insert-or-delete-usage)
 
 ## Prerequisites
 
@@ -297,5 +306,182 @@ dart lib/builder.dart lib/main.dart
 ## Usage
 
 This package is designed for ease of use. The implementation is straightforward, just as I would prefer to use this package.
+To see this working I recommend to check the example.
+
+First, we have to create the 'ModelDao' class, in witch we will have the generic methods of the Dao that we will use with the models.
+
+In my case I only implement the basic Dao in order to insert, delete or update directly from the object. But you can implement the methods that you consider.
+
+So, this class extends the 'Dao' class from the package.
+
+Then, the models extends from 'ModelDao'. And it's all. Now you can insert, delete and update using a method in the model.
+
+Here is an example.
+
+This is the ModelDao class.
+
+```dart
+import 'package:sqflite_simple_dao_backend/database/database/dao_connector.dart';
+
+class ModelDao extends Dao {
+  ModelDao() : super();
+
+  Future<int> insert() async {
+    return await super.insertSingle(objectToInsert: this);
+  }
+
+  Future<int> update() async {
+    return await super.updateSingle(objectToUpdate: this);
+  }
+
+  Future<int> delete() async {
+    return await super.deleteSingle(objectToDelete: this);
+  }
+}
+```
+
+This is the model.
+
+```dart
+@reflector
+class Model extends ModelDao {
+  int? nr;
+  String? name;
+  String? date;
+  double? price;
+```
+
+Now you can use it like this.
+
+```dart
+await models[0].insert();
+
+await models[0].update();
+
+await models[0].delete();
+```
 
 ### Batch Methods
+
+The batch methods are designed to perform an operation (like insert, update, or delete) on multiple data items at once, rather than individually. This can significantly improve performance when dealing with large amounts of data, as it reduces the number of individual database transactions.
+
+#### Batch Insert
+
+Performs a batch insert operation on a table.
+
+This method takes a list of [objectsToInsert] as a parameter and performs a batch insert operation.
+It first performs a select operation on the table corresponding to the type of the first object in the list.
+It then creates two sets: one from the result of the select operation and another from the input [objectsToInsert].
+
+It calls the `_getDifferenceList` method with these two sets as parameters to get a list of new objects that need to be inserted into the table.
+
+It then performs a batch insert operation with the new objects.
+The total number of rows affected by this operation is returned.
+
+This method is useful when you have a list of objects and you want to insert new objects into the table in a single operation.
+
+##### Batch Insert Usage
+
+```dart
+var objectsToInsert = [object1, object2, object3];
+int result = await daoConnector.batchInsert(objectsToInsert: objectsToInsert);
+print('Number of rows inserted: $result');
+```
+
+#### Batch Update
+
+Performs a batch insert or update operation on a table.
+
+This method takes a list of [objects] as a parameter and performs a batch insert or update operation.
+It first performs a select operation on the table corresponding to the type of the first object in the list.
+It then creates two sets: one from the result of the select operation and another from the input [objects].
+
+It calls the `_getDifferenceList` method with these two sets as parameters to get a list of new objects that need to be inserted into the table.
+It also calls the `_getIntersectionList` method with these two sets as parameters to get a list of existing objects that need to be updated in the table.
+
+It then performs a batch insert operation with the new objects and a batch update operation with the existing objects.
+The total number of rows affected by these operations is returned.
+
+This method is useful when you have a list of objects and you want to insert new objects into the table and update existing objects in a single operation.
+
+##### Batch Update Usage
+
+```dart
+var objects = [object1, object2, object3];
+int result = await daoConnector.batchInsertOrUpdate(objects: objects);
+print('Number of rows affected: $result');
+```
+
+#### Batch Delete
+
+Performs a batch delete operation on a table.
+
+This method takes a list of [objectsToDelete] as a parameter and performs a batch delete operation.
+It first gets the database instance and starts a batch operation.
+Then, for each object in the list of objects to delete, it uses reflection to get
+the primary key(s) of the object. It constructs a WHERE clause for the delete
+operation using the primary key(s) and their values.
+
+It then adds the delete operation to the batch. The table name for the delete operation
+is obtained by calling the `getTableName` method with the object.
+
+Finally, it commits the batch and returns the number of operations in the batch.
+If an error occurs during the delete operation, the method logs the error and returns -1.
+
+This method is useful when you have a list of objects and you want to delete them from the table in a single operation.
+
+##### Batch Delete Usage
+
+```dart
+var objectsToDelete = [object1, object2, object3];
+int result = await daoConnector.batchDelete(objectsToDelete: objectsToDelete);
+print('Number of rows deleted: $result');
+```
+
+#### Batch Insert or Update
+
+Performs a batch insert or update operation on a table.
+
+This method takes a list of [objects] as a parameter and performs a batch insert or update operation.
+It first performs a select operation on the table corresponding to the type of the first object in the list.
+It then creates two sets: one from the result of the select operation and another from the input [objects].
+
+It calls the `_getDifferenceList` method with these two sets as parameters to get a list of new objects that need to be inserted into the table.
+It also calls the `_getIntersectionList` method with these two sets as parameters to get a list of existing objects that need to be updated in the table.
+
+It then performs a batch insert operation with the new objects and a batch update operation with the existing objects.
+The total number of rows affected by these operations is returned.
+
+This method is useful when you have a list of objects and you want to insert new objects into the table and update existing objects in a single operation.
+
+##### Batch Insert or Update Usage
+
+```dart
+var objects = [object1, object2, object3];
+int result = await daoConnector.batchInsertOrUpdate(objects: objects);
+print('Number of rows affected: $result');
+```
+
+#### Batch Insert or Delete
+
+Performs a batch insert or delete operation on a table.
+
+This method takes a list of [objects] as a parameter and performs a batch insert or delete operation.
+It first performs a select operation on the table corresponding to the type of the first object in the list.
+It then creates two sets: one from the result of the select operation and another from the input [objects].
+
+It calls the `_getDifferenceList` method with these two sets as parameters to get a list of new objects that need to be inserted into the table.
+It also calls the `_getIntersectionList` method with these two sets as parameters to get a list of existing objects that need to be deleted from the table.
+
+It then performs a batch insert operation with the new objects and a batch delete operation with the existing objects.
+The total number of rows affected by these operations is returned.
+
+This method is useful when you have a list of objects and you want to insert new objects into the table and delete existing objects in a single operation.
+
+##### Batch Insert or Delete Usage
+
+```dart
+var objects = [object1, object2, object3];
+int result = await daoConnector.batchInsertOrDelete(objects: objects);
+print('Number of rows affected: $result');
+```
