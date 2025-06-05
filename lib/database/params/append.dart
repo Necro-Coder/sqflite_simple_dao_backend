@@ -82,6 +82,7 @@ class Append {
           PrintHandler.warningLogger.w(
               'sqflite_simple_dao_backend: In case you want to update the list, just set update = true. 😉');
         }
+        break;
       case 'version':
         if ('${value.runtimeType}'.toLowerCase().contains('int')) {
           DbParameters.dbVersion = value;
