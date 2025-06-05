@@ -552,13 +552,13 @@ class Dao {
       PrintHandler.warningLogger
           .t('⚠️sqflite_simple_dao_backend⚠️: No data found.');
     }
-    if ((T != String ||
-            T != int ||
-            T != double ||
-            T != bool ||
-            T != DateTime ||
-            T == Null) &&
-        model == null) {
+    if (model == null &&
+        T != String &&
+        T != int &&
+        T != double &&
+        T != bool &&
+        T != DateTime &&
+        T != Null) {
       return result;
     } else if (model != null) {
       ClassMirror instance = reflector.reflect(model).type;
