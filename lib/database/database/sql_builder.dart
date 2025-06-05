@@ -242,10 +242,18 @@ class SqlBuilder {
       return this;
     }
     List<String> cases = [];
+
+    if (fields.length > 2) {
+      _error +=
+          'The order statement accepts a maximum of two fields. Each field must be in the form [\'field\', \'ASC|DESC\']';
+      PrintHandler.warningLogger.e(_error);
+      throw Exception(_error);
+    }
+
     for (var field in fields) {
-      if (field.length > 2) {
+      if (field.length != 2) {
         _error +=
-            'The order statement must have a maximum of two fields. field (ASC|DESC),)';
+            'Each order entry must follow the format [\'field\', \'ASC|DESC\']';
         PrintHandler.warningLogger.e(_error);
         throw Exception(_error);
       }
