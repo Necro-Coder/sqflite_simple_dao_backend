@@ -238,6 +238,9 @@ class SqlBuilder {
   /// builder.queryOrder(fields: [['field1', 'ASC'], ['field2', 'DESC']]);
   /// ```
   SqlBuilder queryOrder({List<List<String>> fields = const []}) {
+    if (fields.isEmpty) {
+      return this;
+    }
     List<String> cases = [];
 
     if (fields.length > 2) {
@@ -254,9 +257,9 @@ class SqlBuilder {
         PrintHandler.warningLogger.e(_error);
         throw Exception(_error);
       }
-      cases = [...cases, '${field[0]} ${field[1]}'];
+      cases.add('${field[0]} ${field[1]}');
     }
-    _select.add(cases.join(', '));
+    _select.add('ORDER BY ${cases.join(', ')} ');
     return this;
   }
 
