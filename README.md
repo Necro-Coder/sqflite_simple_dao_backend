@@ -68,7 +68,7 @@ This package can automatically create a database based on the models you define.
 
 - Constants:You can add, modify, or change constants to help create a model structure that sqflite
   recognizes. This feature is crucial for customizing the package to meet your specific needs.
-- The package also print logs in the console in order to display the changes on the database. Does not log in production.
+- The package also prints logs in the console in order to display the changes on the database. Does not log in production.
 
 ## Getting Started
 
