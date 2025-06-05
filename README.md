@@ -35,11 +35,11 @@ This package is designed to simplify database interactions using [reflectable](h
       - [Batch Insert Usage](#batch-insert-usage)
     - [Batch Update](#batch-update)
       - [Batch Update Usage](#batch-update-usage)
-    - [Batch Delete](#batch-update)
+    - [Batch Delete](#batch-delete)
       - [Batch Delete Usage](#batch-delete-usage)
-    - [Batch Insert or Update](#batch-update)
+    - [Batch Insert or Update](#batch-insert-or-update)
       - [Batch Insert or Update Usage](#batch-insert-or-update-usage)
-    - [Batch Insert or Delete](#batch-update)
+    - [Batch Insert or Delete](#batch-insert-or-delete)
       - [Batch Insert or Delete Usage](#batch-insert-or-delete-usage)
 
 ## Prerequisites
